@@ -12,7 +12,7 @@ import com.badlogic.gdx.math.Vector2;
  * A class which represents a building that can be placed on the map.
  * Each building can be stored in the {@link BuildingManager}.
  */
-public abstract class Building extends Sprite {
+public class Building extends Sprite {
 
     // Textures for when a building is placed, colliding, dragged
     private final Texture placedTexture;
@@ -22,7 +22,7 @@ public abstract class Building extends Sprite {
     private boolean isSelected; // True when the corresponding building button is clicked
     private boolean isPlaced; // True when a building is placed on the grid
 
-    private final int width; 
+    private final int width;
     private final int height;
 
     public enum BuildingTypes{
@@ -35,7 +35,7 @@ public abstract class Building extends Sprite {
         Nature
     }
     private BuildingTypes type;
-    
+
     public Building(Texture placedTexture, Texture collisionTexture, Texture draggingTexture, int width, int height, BuildingTypes type) {
 
         this.placedTexture = placedTexture;
@@ -69,7 +69,7 @@ public abstract class Building extends Sprite {
     }
 
     /**
-     * Should be called when is building is being dragged. Will update the 
+     * Should be called when is building is being dragged. Will update the
      * position to the mousePos and will set use the colliding texture
      * if colliding is set to true.
      * @param mousePos The mouse position in world coords.
@@ -121,7 +121,7 @@ public abstract class Building extends Sprite {
 
     /**
      * Ensures that the building stays within the boundaries set by {@link Consts#MAP_MIN_X_BOUNDARY},
-     * {@link Consts#MAP_MAX_X_BOUNDARY}, {@link Consts#MAP_MIN_Y_BOUNDARY} and 
+     * {@link Consts#MAP_MAX_X_BOUNDARY}, {@link Consts#MAP_MIN_Y_BOUNDARY} and
      * {@link Consts#MAP_MAX_Y_BOUNDARY}.
      */
     public void clampPosition() {

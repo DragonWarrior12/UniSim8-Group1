@@ -1,13 +1,15 @@
 package com.badlogic.UniSim2.buildingmanager;
 
 import com.badlogic.UniSim2.mapmanager.Map;
+import com.badlogic.UniSim2.resources.Assets;
+import com.badlogic.UniSim2.resources.Consts;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.utils.Array;
 
 /**
- * This class is used to manage all of the placed {@link Building buildings} 
+ * This class is used to manage all of the placed {@link Building buildings}
  * on the map as well as a single selectedBuilding.
  */
 public class BuildingManager {
@@ -16,7 +18,7 @@ public class BuildingManager {
 
     private Building currentBuilding; // References the building currently selected
 
-    private boolean currentlySelecting; // True when a building is selected and being being dragged 
+    private boolean currentlySelecting; // True when a building is selected and being being dragged
 
     public BuildingManager() {
         buildings = new Array<>();
@@ -48,7 +50,7 @@ public class BuildingManager {
             else if(backspacePressed){
                 removeBuilding();
             }
-            
+
             else{
                 handleDragging(mousePos); // Otherwise continue dragging the building
             }
@@ -67,7 +69,7 @@ public class BuildingManager {
      * the location where it should be placed.
      */
     private void handlePlacing(){
-        // If the current building is not colliding 
+        // If the current building is not colliding
         if(!isColliding(currentBuilding)){
             currentBuilding.placeBuilding(); // Place building
             currentBuilding = null;
@@ -76,7 +78,7 @@ public class BuildingManager {
     }
 
     /**
-     * Called when a building button has been pressed. Deals with placing a new building 
+     * Called when a building button has been pressed. Deals with placing a new building
      * corresponding to the button pressed determined with type
      * @param type The type of the building which the building button relates to.
      */
@@ -95,25 +97,74 @@ public class BuildingManager {
     private void handleType(Building.BuildingTypes type){
         switch(type){
             case Accomodation:
-                currentBuilding = new Accomodation();
+                currentBuilding = new Building(
+                    Assets.accomodationPlacedTexture,
+                    Assets.accomodationCollisionTexture,
+                    Assets.accomodationDraggingTexture,
+                    Consts.ACCOMODATION_WIDTH,
+                    Consts.ACCOMODATION_HEIGHT,
+                    Building.BuildingTypes.Accomodation
+                );
                 break;
             case LectureHall:
-                currentBuilding = new LectureHall();
+                currentBuilding = new Building(
+                    Assets.lectureHallPlacedTexture,
+                    Assets.lectureHallCollisionTexture,
+                    Assets.lectureHallDraggingTexture,
+                    Consts.LECTUREHALL_WIDTH,
+                    Consts.LECTUREHALL_HEIGHT,
+                    Building.BuildingTypes.LectureHall
+                );
                 break;
             case Library:
-                currentBuilding = new Library();
+                currentBuilding = new Building(
+                    Assets.libraryPlacedTexture,
+                    Assets.libraryCollisionTexture,
+                    Assets.libraryDraggingTexture,
+                    Consts.LIBRARY_WIDTH,
+                    Consts.LIBRARY_HEIGHT,
+                    Building.BuildingTypes.Library
+                );
                 break;
             case Course:
-                currentBuilding = new Course();
+                currentBuilding = new Building(
+                    Assets.coursePlacedTexture,
+                    Assets.courseCollisionTexture,
+                    Assets.courseDraggingTexture,
+                    Consts.COURSE_WIDTH,
+                    Consts.COURSE_HEIGHT,
+                    Building.BuildingTypes.Course
+                );
                 break;
             case FoodZone:
-                currentBuilding = new FoodZone();
+                currentBuilding = new Building(
+                    Assets.foodZonePlacedTexture,
+                    Assets.foodZoneCollisionTexture,
+                    Assets.foodZoneDraggingTexture,
+                    Consts.FOODZONE_WIDTH,
+                    Consts.FOODZONE_HEIGHT,
+                    Building.BuildingTypes.FoodZone
+                );
                 break;
             case Recreational:
-                currentBuilding = new Recreational();
+                currentBuilding = new Building(
+                    Assets.recreationalPlacedTexture,
+                    Assets.recreationalCollisionTexture,
+                    Assets.recreationalDraggingTexture,
+                    Consts.RECREATIONAL_WIDTH,
+                    Consts.RECREATIONAL_HEIGHT,
+                    Building.BuildingTypes.Recreational
+                );
                 break;
             case Nature:
-                currentBuilding = new Nature();
+                currentBuilding = new Building(
+                    Assets.naturePlacedTexture,
+                    Assets.natureCollisionTexture,
+                    Assets.natureDraggingTexture,
+                    Consts.NATURE_WIDTH,
+                    Consts.NATURE_HEIGHT,
+                    Building.BuildingTypes.Nature
+                );
                 break;
             default:
                 break;
@@ -138,7 +189,7 @@ public class BuildingManager {
      * @return true if the building is colliding with something and false otherwise.
      */
     private boolean isColliding(Building building){
-        
+
         // For all sprites that are collidable
         for(Sprite collidableSprite : Map.collidableSprites){
             // Check if the building is overlapping with any
