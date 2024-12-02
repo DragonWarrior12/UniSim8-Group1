@@ -44,6 +44,11 @@ tasks.register('dist') {
 
 jacocoTestReport {
   sourceSets project(':core').sourceSets.main
+
+  reports {
+    html.required.set(true)
+    xml.required.set(true)
+  }
 }
 test {
   useJUnitPlatform()
