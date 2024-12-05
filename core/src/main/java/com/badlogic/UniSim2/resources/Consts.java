@@ -117,4 +117,8 @@ public class Consts {
 
     public static final int NATURE_WIDTH = scaleToCellSize(4);
     public static final int NATURE_HEIGHT = scaleToCellSize(5);
+
+    // new consts
+    public static final float SATISFACTION_BAR_BASE_VALUE = 50.0f;
+    public static final float SATISFACTION_BAR_SPEED = 0.03f;
 }
