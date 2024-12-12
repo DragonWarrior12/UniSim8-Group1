@@ -11,7 +11,7 @@ import com.badlogic.gdx.utils.ScreenUtils;
 import com.badlogic.gdx.utils.viewport.StretchViewport;
 
 /**
- * This screen is used when the game is being played. 
+ * This screen is used when the game is being played.
  */
 public class GameScreen implements Screen {
     private Main game;
@@ -21,7 +21,7 @@ public class GameScreen implements Screen {
 
     private GameMenu menu; // Used to make and display the game menu
 
-    boolean isPaused = false;
+    boolean isPaused = true;
 
     // This variable is needed to stop a crash from occuring when the game ends.
     boolean hasEnded = false;
@@ -34,7 +34,7 @@ public class GameScreen implements Screen {
         map = new Map(game);
         menu = new GameMenu(game, timer, map.getBuildingManager());
         SoundManager.playMusic();
-        
+
     }
 
     @Override

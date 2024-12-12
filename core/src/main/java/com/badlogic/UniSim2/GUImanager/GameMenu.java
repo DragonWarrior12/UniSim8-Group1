@@ -37,8 +37,8 @@ public class GameMenu {
         skin = new Skin(Gdx.files.internal("ui/uiskin.json"));
         buildingMenu = new BuildingMenu(stage, buildings);
         this.timer = timer;
-        isPaused = false;
         createMenu();
+        pause();
     }
 
     /**
