@@ -77,6 +77,7 @@ public class GameScreen implements Screen {
     private void update() {
         if (isPaused == false) {
             timer.update();
+            menu.updateSatisfaction();
             if (timer.hasReachedMaxTime()) {
                 game.endGame();
                 hasEnded = true;

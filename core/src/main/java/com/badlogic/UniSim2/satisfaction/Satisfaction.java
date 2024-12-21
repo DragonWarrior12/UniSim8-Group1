@@ -7,6 +7,8 @@ import java.util.Map;
 
 import static java.lang.Math.*;
 
+import com.badlogic.gdx.Gdx;
+
 public class Satisfaction {
     private float value;
     private float target;
@@ -31,9 +33,14 @@ public class Satisfaction {
     }
 
     public void updateScore(){
+        // new
+        target -= Consts.SATISFACTION_DECAY_RATE * Gdx.graphics.getDeltaTime();
+        target = Math.max(0, Math.min(target, 100)); // Clamp between 0 and 100
+        
         float difference = target - value;
-        if (abs(difference) < Consts.SATISFACTION_BAR_SPEED) value = target;
-        else {
+        if (abs(difference) < Consts.SATISFACTION_BAR_SPEED) {
+            value = target;
+        } else {
             float direction = (difference < 0) ? -1 : 1;
             value += Consts.SATISFACTION_BAR_SPEED * direction;
         }
