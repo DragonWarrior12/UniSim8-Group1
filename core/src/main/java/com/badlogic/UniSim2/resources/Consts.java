@@ -127,6 +127,4 @@ public class Consts {
 
     public static final float THOUGHT_LABEL_SCALE = 2.0f;
     public static final float THOUGHT_DISPLAY_DURATION = 5.0f;
-
-    public static final float SATISFACTION_DECAY_RATE = 0.50f; // Decrease by 2 points per second
 }
