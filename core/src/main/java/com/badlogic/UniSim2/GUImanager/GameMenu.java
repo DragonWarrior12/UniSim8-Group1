@@ -154,6 +154,9 @@ public class GameMenu {
 
         updateSatisfaction();
     }
+    public Satisfaction getSatisfaction() {
+        return satisfaction;
+    }
 
     private void updateSatisfaction() {
         satisfaction.updateScore();
@@ -167,5 +170,11 @@ public class GameMenu {
         } else {
             satisfactionBar.setColor(Color.RED);
         }
+    }
+    public BuildingMenu getBuildingMenu() {
+        return buildingMenu;
+}
+    public Stage getStage() {
+        return stage;
     }
 }

@@ -124,4 +124,10 @@ public class Consts {
 
     public static final float SATISFACTION_X = BUILDING_BUTTON_X_BOUNDARY;
     public static final float SATISFACTION_Y = BUILDING_BUTTON_Y_BOUNDARY - BUILDING_BUTTON_GAP;
+
+    public static final float ACHIEVEMENT_HEIGHT = scaleToCellSize(10);
+    public static final float ACHIEVEMENT_WIDTH = scaleToCellSize(35);
+
+    public static final float ACHIEVEMENT_X = scaleToCellSize(1);
+    public static final float ACHIEVEMENT_Y = scaleToCellSize(1) + scaleToCellSize(5);
 }
