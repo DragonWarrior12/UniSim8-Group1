@@ -25,7 +25,7 @@ public class GameMenu {
     private Stage stage;
     private final Skin skin;
     private BuildingMenu buildingMenu;
-    public Timer timer;
+    public Timer timer; // changed to public
     private Label timerLabel;
     private boolean isPaused;
 
@@ -33,7 +33,6 @@ public class GameMenu {
     private ProgressBar satisfactionBar;
     private ProgressBar satisfactionTarget;
     public Satisfaction satisfaction;
-
     private EventManager eventManager;
     private Label thoughtLabel;
     private float thoughtDisplayTime;
@@ -45,7 +44,7 @@ public class GameMenu {
         buildingMenu = new BuildingMenu(stage, buildings);
         this.timer = timer;
         createMenu();
-        pause();
+        pause(); // new
     }
 
     /**
@@ -57,8 +56,8 @@ public class GameMenu {
 
     private void createMenu(){
         buildingMenu.createBuildingMenu();
-        initializeEvents();
-        createSatisfactionBar();
+        initializeEvents(); // new
+        createSatisfactionBar(); // new
         createTimerLabel();
     }
 
@@ -118,9 +117,9 @@ public class GameMenu {
      */
     public void draw(){
         if (isPaused == false) {
-            eventManager.updateEvents();
+            eventManager.updateEvents(); // new
             updateTimerLabel();
-            updateSatisfaction();
+            updateSatisfaction(); // new
         }
         buildingMenu.draw();
         stage.draw();

@@ -1,5 +1,7 @@
 package com.badlogic.UniSim2.events;
 
+// new class
+
 public abstract class Event {
     protected final String name;
     protected final float triggerTime;
