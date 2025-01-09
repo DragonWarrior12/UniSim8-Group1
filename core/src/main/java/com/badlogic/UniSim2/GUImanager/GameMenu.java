@@ -25,19 +25,19 @@ public class GameMenu {
     private Stage stage;
     private final Skin skin;
     private BuildingMenu buildingMenu;
-    private Timer timer;
+    public Timer timer;
     private Label timerLabel;
     private boolean isPaused;
 
     // new
     private ProgressBar satisfactionBar;
     private ProgressBar satisfactionTarget;
-    private Satisfaction satisfaction;
+    public Satisfaction satisfaction;
 
     private EventManager eventManager;
     private Label thoughtLabel;
     private float thoughtDisplayTime;
-    private static final float THOUGHT_DISPLAY_DURATION = 5.0f; 
+    private static final float THOUGHT_DISPLAY_DURATION = 5.0f;
 
     public GameMenu(Main game, Timer timer, BuildingManager buildings){
         stage = new Stage(game.getViewport());
@@ -118,6 +118,7 @@ public class GameMenu {
      */
     public void draw(){
         if (isPaused == false) {
+            eventManager.updateEvents();
             updateTimerLabel();
             updateSatisfaction();
         }
@@ -163,18 +164,7 @@ public class GameMenu {
         updateSatisfaction();
     }
 
-    public void updateSatisfaction() {
-        float currentTime = timer.getElapsedTime();
-        
-        // Check all events
-        for (Event event : eventManager.getEvents()) {
-            if (event.shouldTrigger(currentTime)) {
-                satisfaction.setThought(event.getName(), event.getThought());
-                event.trigger();
-                showThoughtMessage(event.getThought().getDescription());
-            }
-        }
-
+    private void updateSatisfaction() {
         if (thoughtLabel.isVisible()) {
             thoughtDisplayTime += Gdx.graphics.getDeltaTime();
             if (thoughtDisplayTime >= THOUGHT_DISPLAY_DURATION) {
@@ -196,7 +186,7 @@ public class GameMenu {
     }
 
     // new
-    private void showThoughtMessage(String message) {
+    public void showThoughtMessage(String message) {
         thoughtLabel.setText(message);
         thoughtLabel.setVisible(true);
         thoughtDisplayTime = 1;
@@ -205,20 +195,20 @@ public class GameMenu {
     // new
     private void initializeEvents() {
         eventManager = new EventManager();
-        
+
         // Initialize thought label
         thoughtLabel = new Label("", skin);
         thoughtLabel.setFontScale(2);
         thoughtLabel.setAlignment(Align.center);
         thoughtLabel.setColor(Color.WHITE);
         thoughtLabel.setVisible(false);
-        
+
         thoughtLabel.setPosition(
             Consts.WORLD_WIDTH / 2,
             Consts.WORLD_HEIGHT / 2,
             Align.center
         );
-        
+
         stage.addActor(thoughtLabel);
     }
 }

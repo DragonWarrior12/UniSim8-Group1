@@ -17,9 +17,9 @@ public class GameScreen implements Screen {
     private Main game;
     private StretchViewport viewport;
 
-    private Timer timer;
+    public Timer timer;
 
-    private GameMenu menu; // Used to make and display the game menu
+    public GameMenu menu; // Used to make and display the game menu
 
     boolean isPaused = true;
 
@@ -27,6 +27,9 @@ public class GameScreen implements Screen {
     boolean hasEnded = false;
 
     private Map map;
+
+    public static GameScreen gameScreen;
+
     public GameScreen(Main game){
         this.game = game;
         viewport = game.getViewport();
@@ -35,6 +38,7 @@ public class GameScreen implements Screen {
         menu = new GameMenu(game, timer, map.getBuildingManager());
         SoundManager.playMusic();
 
+        gameScreen = this;
     }
 
     @Override
@@ -77,7 +81,6 @@ public class GameScreen implements Screen {
     private void update() {
         if (isPaused == false) {
             timer.update();
-            menu.updateSatisfaction();
             if (timer.hasReachedMaxTime()) {
                 game.endGame();
                 hasEnded = true;
@@ -119,5 +122,6 @@ public class GameScreen implements Screen {
     public void dispose() {
         map.dispose();
         menu.dispose();
+        gameScreen = null;
     }
 }
