@@ -1,6 +1,7 @@
 package com.badlogic.UniSim2.GUImanager;
 
 import com.badlogic.UniSim2.Main;
+import com.badlogic.UniSim2.achievements.AchievementManager;
 import com.badlogic.UniSim2.mapmanager.Map;
 import com.badlogic.UniSim2.resources.Consts;
 import com.badlogic.UniSim2.resources.SoundManager;
@@ -28,6 +29,9 @@ public class GameScreen implements Screen {
 
     private Map map;
 
+    // new
+    private AchievementManager achievementManager;
+
     public static GameScreen gameScreen; // new
 
     public GameScreen(Main game){
@@ -39,6 +43,7 @@ public class GameScreen implements Screen {
         SoundManager.playMusic();
 
         gameScreen = this; // new
+        achievementManager = new AchievementManager(menu); // new
     }
 
     @Override
@@ -49,7 +54,7 @@ public class GameScreen implements Screen {
     @Override
     public void render(float delta) {
         input();
-        update();
+        update(delta); // changed
         if (hasEnded == true) return;
         draw();
     }
@@ -78,7 +83,7 @@ public class GameScreen implements Screen {
      * Will update the timer or not (depending on whether the game is paused)
      * and will end the game if the timer has reached its max time.
      */
-    private void update() {
+    private void update(float deltaTime) { // added delta time
         if (isPaused == false) {
             timer.update();
             if (timer.hasReachedMaxTime()) {
@@ -86,6 +91,7 @@ public class GameScreen implements Screen {
                 hasEnded = true;
             }
         }
+        achievementManager.checkAchievements(deltaTime); // new
     }
 
     /**

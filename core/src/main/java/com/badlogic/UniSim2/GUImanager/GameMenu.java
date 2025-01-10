@@ -163,6 +163,12 @@ public class GameMenu {
         updateSatisfaction();
     }
 
+    // new
+    public Satisfaction getSatisfaction() {
+        return satisfaction;
+    }
+
+    // new
     private void updateSatisfaction() {
         if (thoughtLabel.isVisible()) {
             thoughtDisplayTime += Gdx.graphics.getDeltaTime();
@@ -182,6 +188,16 @@ public class GameMenu {
         } else {
             satisfactionBar.setColor(Color.RED);
         }
+    }
+
+    // new
+    public BuildingMenu getBuildingMenu() {
+        return buildingMenu;
+    }
+
+    // new
+    public Stage getStage() {
+        return stage;
     }
 
     // new

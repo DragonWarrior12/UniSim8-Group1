@@ -125,6 +125,15 @@ public class Consts {
     public static final float SATISFACTION_X = BUILDING_BUTTON_X_BOUNDARY;
     public static final float SATISFACTION_Y = BUILDING_BUTTON_Y_BOUNDARY - BUILDING_BUTTON_GAP;
 
+    public static final float ACHIEVEMENT_HEIGHT = scaleToCellSize(10);
+    public static final float ACHIEVEMENT_WIDTH = scaleToCellSize(35);
+
+    public static final float ACHIEVEMENT_X = scaleToCellSize(1);
+    public static final float ACHIEVEMENT_Y = scaleToCellSize(1) + scaleToCellSize(5);
+
+    public static final float ACHIEVEMENT_TEXT_X = ACHIEVEMENT_X + scaleToCellSize(10);
+    public static final float ACHIEVEMENT_TEXT_Y = ACHIEVEMENT_Y + scaleToCellSize(6);
+
     public static final float THOUGHT_LABEL_SCALE = 2.0f;
     public static final float THOUGHT_DISPLAY_DURATION = 5.0f;
 }

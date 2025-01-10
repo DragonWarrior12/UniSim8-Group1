@@ -30,7 +30,7 @@ public class BuildingMenu {
     private final Skin skin;
 
     // Holds the count of each type of building
-    private int accomodationCount, lectureHallCount, libraryCount, courseCount, foodZoneCount, recreationalCount, natureCount;
+    public int accomodationCount, lectureHallCount, libraryCount, courseCount, foodZoneCount, recreationalCount, natureCount;
     public static int[] buildingCounts;
 
     // Holds the labels that display the count of each building

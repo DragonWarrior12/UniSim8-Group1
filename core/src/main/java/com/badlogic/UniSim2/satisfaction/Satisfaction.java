@@ -1,6 +1,6 @@
 package com.badlogic.UniSim2.satisfaction;
 
-//new class
+// new class
 
 import com.badlogic.UniSim2.resources.Consts;
 
