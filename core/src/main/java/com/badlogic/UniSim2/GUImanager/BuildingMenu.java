@@ -30,12 +30,12 @@ public class BuildingMenu {
     private final Skin skin;
 
     // Holds the count of each type of building
-    private int accomodationCount, lectureHallCount, libraryCount, courseCount, foodZoneCount, recreationalCount, natureCount;
+    public int accomodationCount, lectureHallCount, libraryCount, courseCount, foodZoneCount, recreationalCount, natureCount;
     public static int[] buildingCounts;
 
     // Holds the labels that display the count of each building
     private static Array<Label> countLabels;
-    
+
     public BuildingMenu(Stage stage, BuildingManager buildings){
         this.stage = stage;
         Gdx.input.setInputProcessor(stage);
@@ -43,7 +43,7 @@ public class BuildingMenu {
 
         skin = new Skin(Gdx.files.internal("ui/uiskin.json"));
 
-        // Initializes buildingCounts with each building type 
+        // Initializes buildingCounts with each building type
         buildingCounts = new int[]
         {
             accomodationCount,
@@ -74,13 +74,13 @@ public class BuildingMenu {
      * a count label for each button.
      */
     private void createImageButtons() {
-        int buttonGap = Consts.BUILDING_BUTTON_GAP;
+        int buttonGap = Consts.BUILDING_BUTTON_GAP * 2; // updated
 
         // Iterating through each type of building
         for(Building.BuildingTypes type : Building.BuildingTypes.values()){
 
             createImageButton(type, buttonGap);
-            buttonGap += Consts.BUILDING_BUTTON_GAP; 
+            buttonGap += Consts.BUILDING_BUTTON_GAP;
         }
     }
 
@@ -95,16 +95,16 @@ public class BuildingMenu {
     private void createImageButton(Building.BuildingTypes type, int buttonGap){
         int index = type.ordinal(); // Gets the index of type within BuildingTypes
         ImageButton button = setupImageButton(index, buttonGap); // Creates a button of the building type
-        addImageButtonClick(button, type, index); // Adds a click listener to the button so we can do something when clicked     
+        addImageButtonClick(button, type, index); // Adds a click listener to the button so we can do something when clicked
         stage.addActor(button);
     }
 
-    
+
     /**
      * Sets the texture, size nad position of the button.
      * @param index The index of the button textures in {@link Assets#buttonUpTextures}
      * and {@link Assets#buttonDownTextures}.
-     * @param buttonGap The gap from the max y coord a button can be placed defined by 
+     * @param buttonGap The gap from the max y coord a button can be placed defined by
      * {@link Consts#BUILDING_BUTTON_Y_BOUNDARY} to where the button should be placed.
      * Will place newly created button at ({@link Consts#BUILDING_BUTTON_Y_BOUNDARY} - buttonGap).
      * @return The button.
@@ -130,7 +130,7 @@ public class BuildingMenu {
         return button;
     }
 
-    
+
     /**
      * Adds a click listener to the button so that it knows what to do when
      * clicked.
@@ -151,7 +151,7 @@ public class BuildingMenu {
             }
         });
     }
-    
+
     /**
      * A count label is created for each building button to show how many building
      * of that type have been placed on the map.
@@ -165,7 +165,7 @@ public class BuildingMenu {
         Label countLabel = new Label(String.valueOf(count), skin);
 
         // Sets position of label to the top right of the button
-        float x = button.getX() + button.getWidth(); 
+        float x = button.getX() + button.getWidth();
         float y = button.getY() + button.getHeight();
         countLabel.setPosition(x, y);
 
@@ -207,7 +207,6 @@ public class BuildingMenu {
     }
 
     public void dispose(){
-    } 
+    }
 }
 
-    

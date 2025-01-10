@@ -1,6 +1,7 @@
 package com.badlogic.UniSim2.GUImanager;
 
 import com.badlogic.UniSim2.Main;
+import com.badlogic.UniSim2.achievements.AchievementManager;
 import com.badlogic.UniSim2.mapmanager.Map;
 import com.badlogic.UniSim2.resources.Consts;
 import com.badlogic.UniSim2.resources.SoundManager;
@@ -11,22 +12,28 @@ import com.badlogic.gdx.utils.ScreenUtils;
 import com.badlogic.gdx.utils.viewport.StretchViewport;
 
 /**
- * This screen is used when the game is being played. 
+ * This screen is used when the game is being played.
  */
 public class GameScreen implements Screen {
     private Main game;
     private StretchViewport viewport;
 
-    private Timer timer;
+    public Timer timer; // changed to public
 
-    private GameMenu menu; // Used to make and display the game menu
+    public GameMenu menu; // Used to make and display the game menu  // changed to public
 
-    boolean isPaused = false;
+    boolean isPaused = true; // changed to true
 
     // This variable is needed to stop a crash from occuring when the game ends.
     boolean hasEnded = false;
 
     private Map map;
+
+    // new
+    private AchievementManager achievementManager;
+
+    public static GameScreen gameScreen; // new
+
     public GameScreen(Main game){
         this.game = game;
         viewport = game.getViewport();
@@ -34,7 +41,9 @@ public class GameScreen implements Screen {
         map = new Map(game);
         menu = new GameMenu(game, timer, map.getBuildingManager());
         SoundManager.playMusic();
-        
+
+        gameScreen = this; // new
+        achievementManager = new AchievementManager(menu); // new
     }
 
     @Override
@@ -45,7 +54,7 @@ public class GameScreen implements Screen {
     @Override
     public void render(float delta) {
         input();
-        update();
+        update(delta); // changed
         if (hasEnded == true) return;
         draw();
     }
@@ -74,7 +83,7 @@ public class GameScreen implements Screen {
      * Will update the timer or not (depending on whether the game is paused)
      * and will end the game if the timer has reached its max time.
      */
-    private void update() {
+    private void update(float deltaTime) { // added delta time
         if (isPaused == false) {
             timer.update();
             if (timer.hasReachedMaxTime()) {
@@ -82,6 +91,7 @@ public class GameScreen implements Screen {
                 hasEnded = true;
             }
         }
+        achievementManager.checkAchievements(deltaTime); // new
     }
 
     /**
@@ -118,5 +128,6 @@ public class GameScreen implements Screen {
     public void dispose() {
         map.dispose();
         menu.dispose();
+        gameScreen = null; // new
     }
 }

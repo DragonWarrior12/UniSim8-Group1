@@ -71,12 +71,17 @@ public class Assets {
     public static Texture natureCollisionTexture;
     public static Texture natureDraggingTexture;
 
+    // new
+    public static Texture targetMarker;
+
+    public static Texture achievementTexture;
+
     private Assets() {};
 
     /**
      * This method loads all the textures that might be used.
      * Note that this method should not be called before libgdx has called the
-     * {@link Main#create()} method. 
+     * {@link Main#create()} method.
      */
     public static void loadTextures(){
 
@@ -168,5 +173,10 @@ public class Assets {
         naturePlacedTexture =           new Texture("textures/buildings/naturePlaced.png");
         natureCollisionTexture =        new Texture("textures/buildings/natureCollision.png");
         natureDraggingTexture =         new Texture("textures/buildings/natureDragging.png");
+
+        // new
+        targetMarker =                  new Texture("textures/targetMarker.png");
+
+        achievementTexture =            new Texture("textures/AchievementTexture.png");
     }
 }

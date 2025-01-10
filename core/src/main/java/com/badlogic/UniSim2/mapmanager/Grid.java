@@ -37,6 +37,7 @@ public class Grid {
     }
 
     // Called when a building is placed to update the status of the corresponding grid spaces (Not used yet)
+    @SuppressWarnings("unused")
     private void updateGrid(Building building){
 
         int startCol = building.getCol();

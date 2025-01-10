@@ -72,7 +72,7 @@ public class Consts {
     public static final int BUILDING_BUTTON_HEIGHT = scaleToCellSize(3);
     public static final int BUILDING_BUTTON_X_BOUNDARY = scaleToCellSize(1) / 2;
     public static final int BUILDING_BUTTON_Y_BOUNDARY = WORLD_HEIGHT - scaleToCellSize(2);
-    public static final int BUILDING_BUTTON_GAP = scaleToCellSize(2) + BUILDING_BUTTON_HEIGHT;
+    public static final int BUILDING_BUTTON_GAP = scaleToCellSize(1) + BUILDING_BUTTON_HEIGHT; // updated
 
     public static final int TIMER_WIDTH = scaleToCellSize(6);
     public static final int TIMER_HEIGHT = scaleToCellSize(2);
@@ -117,4 +117,23 @@ public class Consts {
 
     public static final int NATURE_WIDTH = scaleToCellSize(4);
     public static final int NATURE_HEIGHT = scaleToCellSize(5);
+
+    // new consts
+    public static final float SATISFACTION_BAR_BASE_VALUE = 50.0f;
+    public static final float SATISFACTION_BAR_SPEED = 0.03f;
+
+    public static final float SATISFACTION_X = BUILDING_BUTTON_X_BOUNDARY;
+    public static final float SATISFACTION_Y = BUILDING_BUTTON_Y_BOUNDARY - BUILDING_BUTTON_GAP;
+
+    public static final float ACHIEVEMENT_HEIGHT = scaleToCellSize(10);
+    public static final float ACHIEVEMENT_WIDTH = scaleToCellSize(35);
+
+    public static final float ACHIEVEMENT_X = scaleToCellSize(1);
+    public static final float ACHIEVEMENT_Y = scaleToCellSize(1) + scaleToCellSize(5);
+
+    public static final float ACHIEVEMENT_TEXT_X = ACHIEVEMENT_X + scaleToCellSize(10);
+    public static final float ACHIEVEMENT_TEXT_Y = ACHIEVEMENT_Y + scaleToCellSize(6);
+
+    public static final float THOUGHT_LABEL_SCALE = 2.0f;
+    public static final float THOUGHT_DISPLAY_DURATION = 5.0f;
 }

@@ -2,33 +2,49 @@ package com.badlogic.UniSim2.GUImanager;
 
 import com.badlogic.UniSim2.Main;
 import com.badlogic.UniSim2.buildingmanager.BuildingManager;
+import com.badlogic.UniSim2.events.Event;
+import com.badlogic.UniSim2.events.EventManager;
+import com.badlogic.UniSim2.resources.Assets;
 import com.badlogic.UniSim2.resources.Consts;
+import com.badlogic.UniSim2.satisfaction.Satisfaction;
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
+import com.badlogic.gdx.scenes.scene2d.ui.ProgressBar;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
+import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
 import com.badlogic.gdx.utils.Align;
 
 /**
- * This is the game menu that is shown by the {@link GameScreen}. It contains 
+ * This is the game menu that is shown by the {@link GameScreen}. It contains
  * the {@link Timer timer} for the game and {@link BuildingMenu the building menu}
- * which can be used to place new buildings. 
+ * which can be used to place new buildings.
  */
 public class GameMenu {
     private Stage stage;
     private final Skin skin;
     private BuildingMenu buildingMenu;
-    private Timer timer;
+    public Timer timer; // changed to public
     private Label timerLabel;
     private boolean isPaused;
-    
+
+    // new
+    private ProgressBar satisfactionBar;
+    private ProgressBar satisfactionTarget;
+    public Satisfaction satisfaction;
+    private EventManager eventManager;
+    private Label thoughtLabel;
+    private float thoughtDisplayTime;
+    private static final float THOUGHT_DISPLAY_DURATION = 5.0f;
+
     public GameMenu(Main game, Timer timer, BuildingManager buildings){
         stage = new Stage(game.getViewport());
-        skin = new Skin(Gdx.files.internal("ui/uiskin.json")); 
+        skin = new Skin(Gdx.files.internal("ui/uiskin.json"));
         buildingMenu = new BuildingMenu(stage, buildings);
         this.timer = timer;
-        isPaused = false;
         createMenu();
+        pause(); // new
     }
 
     /**
@@ -40,6 +56,8 @@ public class GameMenu {
 
     private void createMenu(){
         buildingMenu.createBuildingMenu();
+        initializeEvents(); // new
+        createSatisfactionBar(); // new
         createTimerLabel();
     }
 
@@ -48,10 +66,10 @@ public class GameMenu {
 
         // Initialize timerLabel
         timerLabel = new Label("00:00", skin);
-        timerLabel.setFontScale(3); 
+        timerLabel.setFontScale(3);
         timerLabel.setAlignment(Align.center);
         timerLabel.setColor(Consts.TIMER_COLOR);
-        
+
         // Position the label at the top center of the screen
         timerLabel.setPosition(Consts.TIMER_X, Consts.TIMER_Y, Align.center);
 
@@ -65,7 +83,7 @@ public class GameMenu {
      */
     private void updateTimerLabel(){
         float elapsedTime = timer.getElapsedTime();
-        int minutes = (int) (elapsedTime / 60); 
+        int minutes = (int) (elapsedTime / 60);
         int seconds = (int) (elapsedTime % 60);
         timerLabel.setText(String.format("%02d:%02d", minutes, seconds));
     }
@@ -86,7 +104,7 @@ public class GameMenu {
         updateTimerLabel();
         isPaused = false;
     }
-    
+
     /**
      * Processes any input.
      */
@@ -99,7 +117,9 @@ public class GameMenu {
      */
     public void draw(){
         if (isPaused == false) {
-            updateTimerLabel();    
+            eventManager.updateEvents(); // new
+            updateTimerLabel();
+            updateSatisfaction(); // new
         }
         buildingMenu.draw();
         stage.draw();
@@ -120,5 +140,90 @@ public class GameMenu {
         buildingMenu.dispose();
         stage.dispose();
         skin.dispose();
+    }
+
+    // new
+    private void createSatisfactionBar() {
+        satisfaction = new Satisfaction();
+
+        satisfactionBar = new ProgressBar(0, 100, 0.01f, false, skin);
+        satisfactionBar.setSize(Consts.BUILDING_BUTTON_WIDTH, Consts.BUILDING_BUTTON_HEIGHT);
+        satisfactionBar.setPosition(Consts.SATISFACTION_X, Consts.SATISFACTION_Y);
+        stage.addActor(satisfactionBar);
+
+        TextureRegionDrawable marker = new TextureRegionDrawable(Assets.targetMarker);
+
+        ProgressBar.ProgressBarStyle style = new ProgressBar.ProgressBarStyle(null, marker);
+
+        satisfactionTarget = new ProgressBar(0, 100, 0.01f, false, style);
+        satisfactionTarget.setSize(Consts.BUILDING_BUTTON_WIDTH, Consts.BUILDING_BUTTON_HEIGHT);
+        satisfactionTarget.setPosition(Consts.SATISFACTION_X, Consts.SATISFACTION_Y);
+        stage.addActor(satisfactionTarget);
+
+        updateSatisfaction();
+    }
+
+    // new
+    public Satisfaction getSatisfaction() {
+        return satisfaction;
+    }
+
+    // new
+    private void updateSatisfaction() {
+        if (thoughtLabel.isVisible()) {
+            thoughtDisplayTime += Gdx.graphics.getDeltaTime();
+            if (thoughtDisplayTime >= THOUGHT_DISPLAY_DURATION) {
+                thoughtLabel.setVisible(false);
+            }
+        }
+
+        satisfaction.updateScore();
+        satisfactionBar.setValue(satisfaction.getScore());
+        satisfactionTarget.setValue(satisfaction.getTarget());
+
+        if (satisfaction.getScore() > 70) {
+            satisfactionBar.setColor(Color.GREEN);
+        } else if (satisfaction.getScore() > 30) {
+            satisfactionBar.setColor(Color.ORANGE);
+        } else {
+            satisfactionBar.setColor(Color.RED);
+        }
+    }
+
+    // new
+    public BuildingMenu getBuildingMenu() {
+        return buildingMenu;
+    }
+
+    // new
+    public Stage getStage() {
+        return stage;
+    }
+
+    // new
+    public void showThoughtMessage(String message) {
+        thoughtLabel.setText(message);
+        thoughtLabel.setVisible(true);
+        thoughtDisplayTime = 1;
+    }
+
+    // new
+    private void initializeEvents() {
+        eventManager = new EventManager();
+
+        // Initialize thought label
+        thoughtLabel = new Label("", skin);
+        thoughtLabel.setFontScale(2);
+        thoughtLabel.setAlignment(Align.center);
+        thoughtLabel.setColor(Color.WHITE);
+        thoughtLabel.setVisible(false);
+
+        thoughtLabel.setPosition(
+            Consts.WORLD_WIDTH / 2,
+            Consts.WORLD_HEIGHT / 2,
+            Align.center
+        );
+
+        stage.addActor(thoughtLabel);
     }
 }
