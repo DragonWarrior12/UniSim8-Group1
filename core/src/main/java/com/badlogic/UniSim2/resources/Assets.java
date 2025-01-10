@@ -177,6 +177,6 @@ public class Assets {
         // new
         targetMarker =                  new Texture("textures/targetMarker.png");
 
-        achievementTexture= new Texture("textures/Achievementpopup.png");
+        achievementTexture =            new Texture("textures/AchievementTexture.png");
     }
 }

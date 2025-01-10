@@ -1,6 +1,7 @@
 package com.badlogic.UniSim2.GUImanager;
 
 import com.badlogic.UniSim2.Main;
+import com.badlogic.UniSim2.achievements.AchievementManager;
 import com.badlogic.UniSim2.mapmanager.Map;
 import com.badlogic.UniSim2.resources.Consts;
 import com.badlogic.UniSim2.resources.SoundManager;
@@ -11,7 +12,7 @@ import com.badlogic.gdx.utils.ScreenUtils;
 import com.badlogic.gdx.utils.viewport.StretchViewport;
 
 /**
- * This screen is used when the game is being played. 
+ * This screen is used when the game is being played.
  */
 public class GameScreen implements Screen {
     private Main game;
@@ -26,6 +27,9 @@ public class GameScreen implements Screen {
     // This variable is needed to stop a crash from occuring when the game ends.
     boolean hasEnded = false;
 
+    // new
+    private AchievementManager achievementManager;
+
     private Map map;
     public GameScreen(Main game){
         this.game = game;
@@ -34,7 +38,7 @@ public class GameScreen implements Screen {
         map = new Map(game);
         menu = new GameMenu(game, timer, map.getBuildingManager());
         SoundManager.playMusic();
-        
+        achievementManager = new AchievementManager(menu); // new
     }
 
     @Override
@@ -45,7 +49,7 @@ public class GameScreen implements Screen {
     @Override
     public void render(float delta) {
         input();
-        update();
+        update(delta); // changed
         if (hasEnded == true) return;
         draw();
     }
@@ -74,7 +78,7 @@ public class GameScreen implements Screen {
      * Will update the timer or not (depending on whether the game is paused)
      * and will end the game if the timer has reached its max time.
      */
-    private void update() {
+    private void update(float deltaTime) { // added delta time
         if (isPaused == false) {
             timer.update();
             if (timer.hasReachedMaxTime()) {
@@ -82,6 +86,7 @@ public class GameScreen implements Screen {
                 hasEnded = true;
             }
         }
+        achievementManager.checkAchievements(deltaTime); // new
     }
 
     /**

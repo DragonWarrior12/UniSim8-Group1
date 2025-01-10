@@ -1,5 +1,7 @@
 package com.badlogic.UniSim2.satisfaction;
 
+// new class
+
 import com.badlogic.UniSim2.resources.Consts;
 
 import java.util.HashMap;

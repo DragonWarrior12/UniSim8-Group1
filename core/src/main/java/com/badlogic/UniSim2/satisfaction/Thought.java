@@ -1,5 +1,7 @@
 package com.badlogic.UniSim2.satisfaction;
 
+// new class
+
 public class Thought {
     private final String title;
     private final String description;

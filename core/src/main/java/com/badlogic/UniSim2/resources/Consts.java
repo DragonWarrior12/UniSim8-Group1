@@ -130,4 +130,7 @@ public class Consts {
 
     public static final float ACHIEVEMENT_X = scaleToCellSize(1);
     public static final float ACHIEVEMENT_Y = scaleToCellSize(1) + scaleToCellSize(5);
+
+    public static final float ACHIEVEMENT_TEXT_X = ACHIEVEMENT_X + scaleToCellSize(10);
+    public static final float ACHIEVEMENT_TEXT_Y = ACHIEVEMENT_Y + scaleToCellSize(6);
 }
