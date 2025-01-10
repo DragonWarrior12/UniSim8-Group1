@@ -2,6 +2,8 @@ package com.badlogic.UniSim2.GUImanager;
 
 import com.badlogic.UniSim2.Main;
 import com.badlogic.UniSim2.buildingmanager.BuildingManager;
+import com.badlogic.UniSim2.events.Event;
+import com.badlogic.UniSim2.events.EventManager;
 import com.badlogic.UniSim2.resources.Assets;
 import com.badlogic.UniSim2.resources.Consts;
 import com.badlogic.UniSim2.satisfaction.Satisfaction;
@@ -23,22 +25,26 @@ public class GameMenu {
     private Stage stage;
     private final Skin skin;
     private BuildingMenu buildingMenu;
-    private Timer timer;
+    public Timer timer; // changed to public
     private Label timerLabel;
     private boolean isPaused;
 
     // new
     private ProgressBar satisfactionBar;
     private ProgressBar satisfactionTarget;
-    private Satisfaction satisfaction;
+    public Satisfaction satisfaction;
+    private EventManager eventManager;
+    private Label thoughtLabel;
+    private float thoughtDisplayTime;
+    private static final float THOUGHT_DISPLAY_DURATION = 5.0f;
 
     public GameMenu(Main game, Timer timer, BuildingManager buildings){
         stage = new Stage(game.getViewport());
         skin = new Skin(Gdx.files.internal("ui/uiskin.json"));
         buildingMenu = new BuildingMenu(stage, buildings);
         this.timer = timer;
-        isPaused = false;
         createMenu();
+        pause(); // new
     }
 
     /**
@@ -50,6 +56,7 @@ public class GameMenu {
 
     private void createMenu(){
         buildingMenu.createBuildingMenu();
+        initializeEvents(); // new
         createSatisfactionBar(); // new
         createTimerLabel();
     }
@@ -110,6 +117,7 @@ public class GameMenu {
      */
     public void draw(){
         if (isPaused == false) {
+            eventManager.updateEvents(); // new
             updateTimerLabel();
             updateSatisfaction(); // new
         }
@@ -154,11 +162,21 @@ public class GameMenu {
 
         updateSatisfaction();
     }
+
+    // new
     public Satisfaction getSatisfaction() {
         return satisfaction;
     }
 
+    // new
     private void updateSatisfaction() {
+        if (thoughtLabel.isVisible()) {
+            thoughtDisplayTime += Gdx.graphics.getDeltaTime();
+            if (thoughtDisplayTime >= THOUGHT_DISPLAY_DURATION) {
+                thoughtLabel.setVisible(false);
+            }
+        }
+
         satisfaction.updateScore();
         satisfactionBar.setValue(satisfaction.getScore());
         satisfactionTarget.setValue(satisfaction.getTarget());
@@ -171,10 +189,41 @@ public class GameMenu {
             satisfactionBar.setColor(Color.RED);
         }
     }
+
+    // new
     public BuildingMenu getBuildingMenu() {
         return buildingMenu;
-}
+    }
+
+    // new
     public Stage getStage() {
         return stage;
+    }
+
+    // new
+    public void showThoughtMessage(String message) {
+        thoughtLabel.setText(message);
+        thoughtLabel.setVisible(true);
+        thoughtDisplayTime = 1;
+    }
+
+    // new
+    private void initializeEvents() {
+        eventManager = new EventManager();
+
+        // Initialize thought label
+        thoughtLabel = new Label("", skin);
+        thoughtLabel.setFontScale(2);
+        thoughtLabel.setAlignment(Align.center);
+        thoughtLabel.setColor(Color.WHITE);
+        thoughtLabel.setVisible(false);
+
+        thoughtLabel.setPosition(
+            Consts.WORLD_WIDTH / 2,
+            Consts.WORLD_HEIGHT / 2,
+            Align.center
+        );
+
+        stage.addActor(thoughtLabel);
     }
 }

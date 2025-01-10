@@ -18,19 +18,22 @@ public class GameScreen implements Screen {
     private Main game;
     private StretchViewport viewport;
 
-    private Timer timer;
+    public Timer timer; // changed to public
 
-    private GameMenu menu; // Used to make and display the game menu
+    public GameMenu menu; // Used to make and display the game menu  // changed to public
 
-    boolean isPaused = false;
+    boolean isPaused = true; // changed to true
 
     // This variable is needed to stop a crash from occuring when the game ends.
     boolean hasEnded = false;
 
+    private Map map;
+
     // new
     private AchievementManager achievementManager;
 
-    private Map map;
+    public static GameScreen gameScreen; // new
+
     public GameScreen(Main game){
         this.game = game;
         viewport = game.getViewport();
@@ -38,6 +41,8 @@ public class GameScreen implements Screen {
         map = new Map(game);
         menu = new GameMenu(game, timer, map.getBuildingManager());
         SoundManager.playMusic();
+
+        gameScreen = this; // new
         achievementManager = new AchievementManager(menu); // new
     }
 
@@ -123,5 +128,6 @@ public class GameScreen implements Screen {
     public void dispose() {
         map.dispose();
         menu.dispose();
+        gameScreen = null; // new
     }
 }

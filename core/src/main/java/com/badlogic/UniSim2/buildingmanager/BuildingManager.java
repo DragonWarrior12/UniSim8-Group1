@@ -94,7 +94,7 @@ public class BuildingManager {
      * Creates a new building based on the type.
      * @param type The type of the building to create.
      */
-    private void handleType(Building.BuildingTypes type){
+    private void handleType(Building.BuildingTypes type){ // changed building classes to single class
         switch(type){
             case Accomodation:
                 currentBuilding = new Building(

@@ -12,7 +12,7 @@ import com.badlogic.gdx.math.Vector2;
  * A class which represents a building that can be placed on the map.
  * Each building can be stored in the {@link BuildingManager}.
  */
-public class Building extends Sprite {
+public class Building extends Sprite { // made non abstract
 
     // Textures for when a building is placed, colliding, dragged
     private final Texture placedTexture;
