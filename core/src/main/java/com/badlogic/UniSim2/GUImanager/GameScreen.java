@@ -34,7 +34,7 @@ public class GameScreen implements Screen {
 
     public static GameScreen gameScreen; // new
 
-    public GameScreen(Main game){
+    public GameScreen(Main game) {
         this.game = game;
         viewport = game.getViewport();
         timer = new Timer();
@@ -66,12 +66,11 @@ public class GameScreen implements Screen {
         menu.input();
         map.input();
 
-        if(Gdx.input.isKeyJustPressed(Input.Keys.SPACE)){
+        if (Gdx.input.isKeyJustPressed(Input.Keys.SPACE)) {
             if (isPaused) {
                 isPaused = false;
                 menu.resume();
-            }
-            else {
+            } else {
                 isPaused = true;
                 menu.pause();
             }
@@ -105,6 +104,10 @@ public class GameScreen implements Screen {
         menu.draw();
     }
 
+    // new
+    public AchievementManager getAchievementManager() {
+        return achievementManager;
+    }
 
     @Override
     public void resize(int width, int height) {
