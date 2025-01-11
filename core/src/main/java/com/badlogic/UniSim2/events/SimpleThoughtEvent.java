@@ -21,12 +21,12 @@ public class SimpleThoughtEvent extends Event{
     public void update(float time) {
         if (time >= triggerTime) {
             if (time >= endTime) {
-                GameScreen.gameScreen.menu.satisfaction.removeThought(name);
+                GameScreen.gameScreen.menu.getSatisfaction().removeThought(name);
                 isFinished = true;
                 return;
             }
 
-            GameScreen.gameScreen.menu.satisfaction.setThought(name, thought);
+            GameScreen.gameScreen.menu.getSatisfaction().setThought(name, thought);
         }
     }
 }

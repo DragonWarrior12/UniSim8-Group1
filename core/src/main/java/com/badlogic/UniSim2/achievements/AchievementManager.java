@@ -2,73 +2,71 @@ package com.badlogic.UniSim2.achievements;
 
 // new class
 
+import com.badlogic.UniSim2.GUImanager.BuildingMenu;
 import com.badlogic.UniSim2.GUImanager.GameMenu;
+import com.badlogic.UniSim2.GUImanager.GameScreen;
 import com.badlogic.UniSim2.resources.Assets;
 
 import com.badlogic.UniSim2.resources.Consts;
+import com.badlogic.UniSim2.satisfaction.Thought;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Color;
+import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
+import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
 
 import java.util.ArrayList;
 import java.util.List;
 
 public class AchievementManager {
-    private Image achievementImage;
-    private Label achievementLabel;
-    private float achievementDisplayTimer;
+    private GameMenu menu;
     public List<Achievement> incompleteAchievements;
     public List<Achievement> completeAchievements;
 
-    public AchievementManager(GameMenu gameMenu) {
-        Skin skin = new Skin(Gdx.files.internal("ui/uiskin.json"));
-
-        achievementImage = new Image(Assets.achievementTexture);
-        achievementImage.setPosition(Consts.ACHIEVEMENT_X, Consts.ACHIEVEMENT_Y);
-        achievementImage.setSize(Consts.ACHIEVEMENT_WIDTH, Consts.ACHIEVEMENT_HEIGHT);
-        achievementImage.setVisible(false);
-
-        achievementLabel = new Label("", skin);
-        achievementLabel.setPosition(Consts.ACHIEVEMENT_TEXT_X, Consts.ACHIEVEMENT_TEXT_Y);
-        achievementLabel.setFontScale(3);
-        achievementLabel.setColor(Color.BLACK);
-        achievementImage.setVisible(false);
-
-        gameMenu.getStage().addActor(achievementImage);
-        gameMenu.getStage().addActor(achievementLabel);
+    public AchievementManager(GameMenu menu) {
+        this.menu = menu;
 
         incompleteAchievements = new ArrayList<>();
         completeAchievements = new ArrayList<>();
-        incompleteAchievements.add(new GreenThumbAchievement());
-        incompleteAchievements.add(new BookwormAchievement());
+
+        createAchievements();
     }
 
-    public void checkAchievements(float deltaTime) {
+    public void checkAchievements() {
         for (int x = 0; x < incompleteAchievements.size(); x++) {
             Achievement ach = incompleteAchievements.get(x);
             if (ach.checkCompletion()) {
                 incompleteAchievements.remove(x);
                 completeAchievements.add(ach);
-                displayAchievement(ach);
+                menu.displayAchievement(ach);
+                ach.onCompletion.fire();
                 x--;
-            }
-        }
-
-        if (achievementDisplayTimer >= 0){
-            achievementDisplayTimer -= deltaTime;
-            if (achievementDisplayTimer < 0) {
-                achievementImage.setVisible(false);
-                achievementLabel.setVisible(false);
             }
         }
     }
 
-    public void displayAchievement(Achievement achievement) {
-        achievementLabel.setText(achievement.getName() + String.format("\nx%.1f score multiplier", achievement.getScoreMultiplier()));
-        achievementImage.setVisible(true);
-        achievementLabel.setVisible(true);
-        achievementDisplayTimer = 3;
+    public void createAchievements() {
+        incompleteAchievements.add(new Achievement(
+            "Bookworn",
+            "Have four or more libraries, x1.2 final score",
+            () -> BuildingMenu.buildingCounts[2] > 3,
+            1.2f));
+
+        Thought greenThumbThought = new Thought("Green Thumb", "Students love the green space around campus", 10);
+        incompleteAchievements.add(new Achievement(
+            "Green Thumb",
+            "Have five or more nature spaces,\n+10 satisfaction target",
+            () -> BuildingMenu.buildingCounts[6] >= 5,
+            1f,
+            () -> GameScreen.gameScreen.menu.getSatisfaction().setThought("Green Thumb", greenThumbThought)));
+
+        incompleteAchievements.add(new Achievement(
+            "Catastrophe",
+            "Reach 0 satisfaction, x0.4 score",
+            () -> GameScreen.gameScreen.menu.getSatisfaction().getScore() <= 0.001, // not exact check due to floating point accuracy
+            0.4f,
+            Assets.badAchievementTexture));
     }
 }

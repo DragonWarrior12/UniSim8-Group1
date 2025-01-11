@@ -28,15 +28,15 @@ public class ConditionalThoughtEvent extends Event {
     public void update(float time) {
         if (time >= triggerTime) {
             if (time >= endTime) {
-                GameScreen.gameScreen.menu.satisfaction.removeThought(name);
+                GameScreen.gameScreen.menu.getSatisfaction().removeThought(name);
                 isFinished = true;
                 return;
             }
 
             if (condition.check()) {
-                GameScreen.gameScreen.menu.satisfaction.setThought(name, satisfiedThought);
+                GameScreen.gameScreen.menu.getSatisfaction().setThought(name, satisfiedThought);
             } else {
-                GameScreen.gameScreen.menu.satisfaction.setThought(name, unsatisfiedThought);
+                GameScreen.gameScreen.menu.getSatisfaction().setThought(name, unsatisfiedThought);
             }
         }
     }

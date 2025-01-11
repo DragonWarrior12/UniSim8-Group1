@@ -3,7 +3,6 @@ package com.badlogic.UniSim2.events;
 // new class
 
 import com.badlogic.UniSim2.GUImanager.BuildingMenu;
-import com.badlogic.UniSim2.GUImanager.GameScreen;
 import com.badlogic.UniSim2.buildingmanager.Building;
 import com.badlogic.UniSim2.satisfaction.Thought;
 import java.util.ArrayList;
@@ -14,15 +13,15 @@ public class EventManager {
 
     public EventManager() {
         events = new ArrayList<>();
-        initializeEvents();
+        createEvents();
     }
 
-    private void initializeEvents() {
-        // Create thoughts for each event
+    private void createEvents() {
+        // Scheduled events
         Thought freshersThought = new Thought(
             "Freshers Week",
             "Students are enjoying Freshers Week",
-            20
+            30
         );
 
         Thought christmasThought = new Thought(
@@ -43,10 +42,11 @@ public class EventManager {
                 25
         );
 
-        events.add(new SimpleThoughtEvent("Freshers Week", 2.0f, freshersThought, 30f));
+        events.add(new SimpleThoughtEvent("Freshers Week", 0.0f, freshersThought, 20f));
         events.add(new SimpleThoughtEvent("Christmas Break", 60.0f, christmasThought, 80f));
-        events.add(new ConditionalThoughtEvent("Exam Week", 0.0f, examStressThought, examSatisfiedThought, () -> BuildingMenu.buildingCounts[2] > 3, 110f));
+        events.add(new ConditionalThoughtEvent("Exam Week", 90.0f, examStressThought, examSatisfiedThought, () -> BuildingMenu.buildingCounts[2] > 3, 110f));
 
+        // Building count requirements implemented as permanent events
         for (Building.BuildingTypes type : new Building.BuildingTypes[] {
                 Building.BuildingTypes.Course,
                 Building.BuildingTypes.Accomodation,
@@ -64,7 +64,7 @@ public class EventManager {
             Thought satisfiedThought = new Thought(
                     type.name(),
                     "",
-                    10
+                    5
             );
 
             Thought unsatisfiedThought = new Thought(
@@ -79,9 +79,9 @@ public class EventManager {
         }
     }
 
-    public void updateEvents() {
+    public void updateEvents(float time) {
         for (Event event : getEvents()) {
-            event.update(GameScreen.gameScreen.timer.getElapsedTime());
+            event.update(time);
         }
 
         events.removeIf((event) -> event.isFinished);

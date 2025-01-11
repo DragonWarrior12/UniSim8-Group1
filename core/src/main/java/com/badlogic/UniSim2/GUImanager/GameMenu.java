@@ -1,6 +1,7 @@
 package com.badlogic.UniSim2.GUImanager;
 
 import com.badlogic.UniSim2.Main;
+import com.badlogic.UniSim2.achievements.Achievement;
 import com.badlogic.UniSim2.buildingmanager.BuildingManager;
 import com.badlogic.UniSim2.events.EventManager;
 import com.badlogic.UniSim2.resources.Assets;
@@ -13,12 +14,11 @@ import com.badlogic.gdx.graphics.Pixmap;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.scenes.scene2d.Stage;
-import com.badlogic.gdx.scenes.scene2d.ui.Label;
-import com.badlogic.gdx.scenes.scene2d.ui.ProgressBar;
-import com.badlogic.gdx.scenes.scene2d.ui.Skin;
-import com.badlogic.gdx.scenes.scene2d.ui.Table;
+import com.badlogic.gdx.scenes.scene2d.ui.*;
 import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
 import com.badlogic.gdx.utils.Align;
+
+import java.util.Objects;
 
 /**
  * This is the game menu that is shown by the {@link GameScreen}. It contains
@@ -36,9 +36,12 @@ public class GameMenu {
     // new
     private ProgressBar satisfactionBar;
     private ProgressBar satisfactionTarget;
-    public Satisfaction satisfaction;
+    private Satisfaction satisfaction;
     EventManager eventManager; // package private for use in the GameScreen constructor
     private Table thoughtTable;
+    private Image achievementImage;
+    private Label achievementLabel;
+    private float achievementDisplayTimer;
 
     public GameMenu(Main game, Timer timer, BuildingManager buildings) {
         stage = new Stage(game.getViewport());
@@ -60,6 +63,7 @@ public class GameMenu {
         buildingMenu.createBuildingMenu();
         createSatisfactionBar(); // new
         initializeEvents(); // new
+        createAchievementPopup(); // new
         createTimerLabel();
     }
 
@@ -118,13 +122,15 @@ public class GameMenu {
      * Updates and draws the menu.
      */
     public void draw() {
-        eventManager.updateEvents(); // new
+        float delta = GameScreen.gameScreen.timer.getElapsedTime();
+        eventManager.updateEvents(delta); // new
         if (isPaused == false) {
             updateTimerLabel();
             satisfaction.updateScore(); // new
         }
         updateSatisfactionBar(); // new
-        updateThoughts(); // new
+        updateThoughtsTable(); // new
+        updateAchievementDisplay(delta);
         buildingMenu.draw();
         stage.draw();
     }
@@ -187,11 +193,11 @@ public class GameMenu {
     }
 
     // new, package private for use in the GameScreen constructor
-    void updateThoughts() {
+    void updateThoughtsTable() {
         thoughtTable.clearChildren();
 
         for (Thought thought : satisfaction.listThoughts()) {
-            if (thought.getDescription() == "") continue; // allows for hidden thoughts
+            if (Objects.equals(thought.getDescription(), "")) continue; // allows for hidden thoughts when description is empty
 
             Label label = new Label(thought.getDescription(), skin);
 
@@ -209,6 +215,42 @@ public class GameMenu {
             // if width isn't set here the text won't expand to the size of the table
             thoughtTable.add(label).pad(6).width(Consts.THOUGHT_TABLE_WIDTH);
             thoughtTable.row();
+        }
+    }
+
+    // new
+    public void createAchievementPopup() {
+        achievementImage = new Image(Assets.achievementTexture);
+        achievementImage.setPosition(Consts.ACHIEVEMENT_X, Consts.ACHIEVEMENT_Y);
+        achievementImage.setSize(Consts.ACHIEVEMENT_WIDTH, Consts.ACHIEVEMENT_HEIGHT);
+        achievementImage.setVisible(false);
+
+        achievementLabel = new Label("", skin);
+        achievementLabel.setPosition(Consts.ACHIEVEMENT_TEXT_X, Consts.ACHIEVEMENT_TEXT_Y);
+        achievementLabel.setFontScale(2);
+        achievementLabel.setColor(Color.BLACK);
+        achievementImage.setVisible(false);
+
+        getStage().addActor(achievementImage);
+        getStage().addActor(achievementLabel);
+    }
+
+    public void displayAchievement(Achievement achievement) {
+        achievementLabel.setText(achievement.getName() + "\n" + achievement.getDescription());
+        achievementImage.setDrawable(new TextureRegionDrawable(new TextureRegion(achievement.getTexture())));
+        achievementImage.setVisible(true);
+        achievementLabel.setVisible(true);
+        achievementDisplayTimer = 3;
+    }
+
+    // new
+    public void updateAchievementDisplay(float deltaTime) {
+        if (achievementDisplayTimer >= 0) {
+            achievementDisplayTimer -= deltaTime;
+            if (achievementDisplayTimer < 0) {
+                achievementImage.setVisible(false);
+                achievementLabel.setVisible(false);
+            }
         }
     }
 

@@ -25,7 +25,7 @@ public class SatisfactionTests {
         bar.setThought("test", thought);
 
         assertEquals(thought, bar.getThought("test"));
-        assertEquals(Consts.SATISFACTION_BAR_BASE_VALUE + thought.getModification(), bar.getTarget(), 0.0001);
+        assertEquals(Consts.SATISFACTION_BAR_BASE_VALUE + 10, bar.getTarget(), 0.0001);
     }
 
     @Test
@@ -87,7 +87,7 @@ public class SatisfactionTests {
             bar.updateScore();
         }
 
-        assertEquals(Consts.SATISFACTION_BAR_BASE_VALUE + thought.getModification(), bar.getScore(), 0.0001);
+        assertEquals(Consts.SATISFACTION_BAR_BASE_VALUE + 1, bar.getScore(), 0.0001);
 
         thought = new Thought("Test", "", -1);
 
@@ -97,6 +97,6 @@ public class SatisfactionTests {
             bar.updateScore();
         }
 
-        assertEquals(Consts.SATISFACTION_BAR_BASE_VALUE + thought.getModification(), bar.getScore(), 0.0001);
+        assertEquals(Consts.SATISFACTION_BAR_BASE_VALUE - 1, bar.getScore(), 0.0001);
     }
 }

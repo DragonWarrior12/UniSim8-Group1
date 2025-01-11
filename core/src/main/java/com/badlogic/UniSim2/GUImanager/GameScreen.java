@@ -44,8 +44,8 @@ public class GameScreen implements Screen {
         SoundManager.playMusic();
 
         // new, for events that start immediately. It can't be in GameMenu.initialiseEvents as it requires menu to be set
-        menu.eventManager.updateEvents();
-        menu.updateThoughts();
+        menu.eventManager.updateEvents(0);
+        menu.updateThoughtsTable();
 
         achievementManager = new AchievementManager(menu); // new
     }
@@ -94,7 +94,7 @@ public class GameScreen implements Screen {
                 hasEnded = true;
             }
         }
-        achievementManager.checkAchievements(deltaTime); // new
+        achievementManager.checkAchievements(); // new
     }
 
     /**
