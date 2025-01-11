@@ -2,6 +2,7 @@ package com.badlogic.UniSim2.events;
 
 import com.badlogic.UniSim2.GUImanager.GameScreen;
 import com.badlogic.UniSim2.resources.Consts;
+import com.badlogic.UniSim2.satisfaction.Satisfaction;
 import com.badlogic.UniSim2.satisfaction.Thought;
 
 public class ConditionalThoughtEvent extends Event {
@@ -10,7 +11,7 @@ public class ConditionalThoughtEvent extends Event {
     private final Condition condition;
 
     @FunctionalInterface
-    interface Condition {
+    public interface Condition {
         boolean check();
     }
 
@@ -28,15 +29,15 @@ public class ConditionalThoughtEvent extends Event {
     public void update(float time) {
         if (time >= triggerTime) {
             if (time >= endTime) {
-                GameScreen.gameScreen.menu.getSatisfaction().removeThought(name);
+                Satisfaction.satisfaction.removeThought(name);
                 isFinished = true;
                 return;
             }
 
             if (condition.check()) {
-                GameScreen.gameScreen.menu.getSatisfaction().setThought(name, satisfiedThought);
+                Satisfaction.satisfaction.setThought(name, satisfiedThought);
             } else {
-                GameScreen.gameScreen.menu.getSatisfaction().setThought(name, unsatisfiedThought);
+                Satisfaction.satisfaction.setThought(name, unsatisfiedThought);
             }
         }
     }

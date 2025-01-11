@@ -34,15 +34,15 @@ public class AchievementTests {
 
         achievementManager.checkAchievements();
 
-        assertTrue(achievementManager.incompleteAchievements.contains(achievement));
-        assertFalse(achievementManager.completeAchievements.contains(achievement));
+        assertTrue(achievementManager.incompleteAchievements.contains(achievement), "Achievement removed from incomplete early");
+        assertFalse(achievementManager.completeAchievements.contains(achievement), "Achievement added to completed early");
 
         complete = true;
 
         achievementManager.checkAchievements();
 
-        assertFalse(achievementManager.incompleteAchievements.contains(achievement));
-        assertTrue(achievementManager.completeAchievements.contains(achievement));
+        assertFalse(achievementManager.incompleteAchievements.contains(achievement), "Achievement not removed form incomplete");
+        assertTrue(achievementManager.completeAchievements.contains(achievement), "Achievement not added to complete");
     }
 
     @Test
@@ -59,6 +59,6 @@ public class AchievementTests {
 
         achievementManager.checkAchievements();
 
-        assertTrue(complete);
+        assertTrue(complete, "Achievement OnComplete didn't run");
     }
 }

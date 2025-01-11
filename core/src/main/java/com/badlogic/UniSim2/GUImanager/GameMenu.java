@@ -122,7 +122,7 @@ public class GameMenu {
      * Updates and draws the menu.
      */
     public void draw() {
-        float delta = GameScreen.gameScreen.timer.getElapsedTime();
+        float delta = GameScreen.gameScreen.getTimer().getElapsedTime();
         eventManager.updateEvents(delta); // new
         if (isPaused == false) {
             updateTimerLabel();
@@ -171,11 +171,6 @@ public class GameMenu {
         stage.addActor(satisfactionTarget);
 
         updateSatisfactionBar();
-    }
-
-    // new
-    public Satisfaction getSatisfaction() {
-        return satisfaction;
     }
 
     // new

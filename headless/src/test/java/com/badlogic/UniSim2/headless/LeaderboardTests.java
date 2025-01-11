@@ -35,21 +35,21 @@ public class LeaderboardTests {
     @Test
     public void testAddScore() {
         LeaderboardManager.addScore("Test1", 100f);
-        assertEquals(1, getSortedLeaderboard().size());
+        assertEquals(1, getSortedLeaderboard().size(), "Incorrect number of scores");
 
         // doesn't overwrite higher score
         LeaderboardManager.addScore("Test1", 90f);
-        assertEquals(100f, getSortedLeaderboard().get(0).getValue(), 0.0001);
+        assertEquals(100f, getSortedLeaderboard().get(0).getValue(), 0.0001, "Score overwritten with lower value");
 
         LeaderboardManager.addScore("Test2", 100f);
-        assertEquals(2, getSortedLeaderboard().size());
+        assertEquals(2, getSortedLeaderboard().size(), "Incorrect number of scores");
     }
 
     @Test
     public void testClear() {
         LeaderboardManager.addScore("Test2", 100f);
         LeaderboardManager.clearLeaderboard();
-        assertEquals(0, getSortedLeaderboard().size());
+        assertEquals(0, getSortedLeaderboard().size(), "Leaderboard not empty");
     }
 
     @Test

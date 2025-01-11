@@ -4,6 +4,7 @@ package com.badlogic.UniSim2.events;
 
 import com.badlogic.UniSim2.GUImanager.GameScreen;
 import com.badlogic.UniSim2.resources.Consts;
+import com.badlogic.UniSim2.satisfaction.Satisfaction;
 import com.badlogic.UniSim2.satisfaction.Thought;
 
 public class SimpleThoughtEvent extends Event{
@@ -21,12 +22,12 @@ public class SimpleThoughtEvent extends Event{
     public void update(float time) {
         if (time >= triggerTime) {
             if (time >= endTime) {
-                GameScreen.gameScreen.menu.getSatisfaction().removeThought(name);
+                Satisfaction.satisfaction.removeThought(name);
                 isFinished = true;
                 return;
             }
 
-            GameScreen.gameScreen.menu.getSatisfaction().setThought(name, thought);
+            Satisfaction.satisfaction.setThought(name, thought);
         }
     }
 }

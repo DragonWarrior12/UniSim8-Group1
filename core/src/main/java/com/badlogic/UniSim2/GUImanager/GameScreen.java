@@ -18,9 +18,9 @@ public class GameScreen implements Screen {
     private Main game;
     private StretchViewport viewport;
 
-    public Timer timer; // changed to public
+    private Timer timer;
 
-    public GameMenu menu; // Used to make and display the game menu  // changed to public
+    private GameMenu menu; // Used to make and display the game menu
 
     boolean isPaused = true; // changed to true
 
@@ -111,6 +111,16 @@ public class GameScreen implements Screen {
     // new
     public AchievementManager getAchievementManager() {
         return achievementManager;
+    }
+
+    // new
+    public GameMenu getMenu() {
+        return menu;
+    }
+
+    // new
+    public Timer getTimer() {
+        return timer;
     }
 
     @Override

@@ -14,11 +14,13 @@ public class Satisfaction {
     private float value;
     private float target;
     private final Map<String, Thought> thoughts;
+    public static Satisfaction satisfaction;
 
     public Satisfaction(){
         thoughts = new HashMap<>();
         resetScore();
         calculateTarget();
+        satisfaction = this;
     }
 
     private void resetScore(){

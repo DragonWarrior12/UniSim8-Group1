@@ -4,18 +4,10 @@ package com.badlogic.UniSim2.achievements;
 
 import com.badlogic.UniSim2.GUImanager.BuildingMenu;
 import com.badlogic.UniSim2.GUImanager.GameMenu;
-import com.badlogic.UniSim2.GUImanager.GameScreen;
 import com.badlogic.UniSim2.resources.Assets;
 
-import com.badlogic.UniSim2.resources.Consts;
+import com.badlogic.UniSim2.satisfaction.Satisfaction;
 import com.badlogic.UniSim2.satisfaction.Thought;
-import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.graphics.Color;
-import com.badlogic.gdx.graphics.g2d.TextureRegion;
-import com.badlogic.gdx.scenes.scene2d.ui.Image;
-import com.badlogic.gdx.scenes.scene2d.ui.Label;
-import com.badlogic.gdx.scenes.scene2d.ui.Skin;
-import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -60,12 +52,12 @@ public class AchievementManager {
             "Have five or more nature spaces,\n+10 satisfaction target",
             () -> BuildingMenu.buildingCounts[6] >= 5,
             1f,
-            () -> GameScreen.gameScreen.menu.getSatisfaction().setThought("Green Thumb", greenThumbThought)));
+            () -> Satisfaction.satisfaction.setThought("Green Thumb", greenThumbThought)));
 
         incompleteAchievements.add(new Achievement(
             "Catastrophe",
             "Reach 0 satisfaction, x0.4 score",
-            () -> GameScreen.gameScreen.menu.getSatisfaction().getScore() <= 0.001, // not exact check due to floating point accuracy
+            () -> Satisfaction.satisfaction.getScore() <= 0.001, // not exact check due to floating point accuracy
             0.4f,
             Assets.badAchievementTexture));
     }

@@ -6,6 +6,7 @@ import com.badlogic.UniSim2.GUImanager.LeaderboardScreen; // review just for deb
 import com.badlogic.UniSim2.GUImanager.StartScreen;
 import com.badlogic.UniSim2.achievements.Achievement;
 import com.badlogic.UniSim2.resources.*;
+import com.badlogic.UniSim2.satisfaction.Satisfaction;
 import com.badlogic.gdx.Game;
 import com.badlogic.gdx.utils.viewport.StretchViewport;
 
@@ -52,7 +53,7 @@ public class Main extends Game {
      * the {@link GameScreen} when the timer ends.
      */
     public void endGame() {
-        float score = gameScreen.menu.getSatisfaction().getScore();
+        float score = Satisfaction.satisfaction.getScore();
 
         for (Achievement ach : gameScreen.getAchievementManager().completeAchievements) {
             score *= ach.getScoreMultiplier();
