@@ -5,6 +5,7 @@ package com.badlogic.UniSim2.satisfaction;
 import com.badlogic.UniSim2.resources.Consts;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import static java.lang.Math.*;
@@ -48,6 +49,10 @@ public class Satisfaction {
 
     public Thought getThought(String key){
         return thoughts.get(key);
+    }
+
+    public List<Thought> listThoughts(){
+        return thoughts.values().stream().toList();
     }
 
     public void removeThought(String key){

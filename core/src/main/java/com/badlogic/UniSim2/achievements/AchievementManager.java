@@ -66,7 +66,7 @@ public class AchievementManager {
     }
 
     public void displayAchievement(Achievement achievement) {
-        achievementLabel.setText(achievement.getName());
+        achievementLabel.setText(achievement.getName() + String.format("\nx%.1f score multiplier", achievement.getScoreMultiplier()));
         achievementImage.setVisible(true);
         achievementLabel.setVisible(true);
         achievementDisplayTimer = 3;

@@ -5,11 +5,13 @@ package com.badlogic.UniSim2.events;
 public abstract class Event {
     protected final String name;
     protected final float triggerTime;
+    protected final float endTime;
     protected boolean isFinished;
 
-    public Event(String name, float triggerTime) {
+    public Event(String name, float triggerTime, float endTime) {
         this.name = name;
         this.triggerTime = triggerTime;
+        this.endTime = endTime;
         this.isFinished = false;
     }
 

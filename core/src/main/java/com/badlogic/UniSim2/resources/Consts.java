@@ -80,7 +80,7 @@ public class Consts {
     public static final int TIMER_Y = WORLD_HEIGHT - scaleToCellSize(2);
     public static final int TIMER_SIZE = 3;
     public static final Color TIMER_COLOR = new Color(Color.BLACK);
-    public static final int MAX_TIME = 10;
+    public static final int MAX_TIME = 300;
 
     public static final int SCORE_LABEL_WIDTH = scaleToCellSize(6);
     public static final int SCORE_LABEL_HEIGHT = scaleToCellSize(2);
@@ -120,7 +120,7 @@ public class Consts {
 
     // new consts
     public static final float SATISFACTION_BAR_BASE_VALUE = 50.0f;
-    public static final float SATISFACTION_BAR_SPEED = 0.03f;
+    public static final float SATISFACTION_BAR_SPEED = 0.05f;
 
     public static final float SATISFACTION_X = BUILDING_BUTTON_X_BOUNDARY;
     public static final float SATISFACTION_Y = BUILDING_BUTTON_Y_BOUNDARY - BUILDING_BUTTON_GAP;
@@ -134,11 +134,11 @@ public class Consts {
     public static final float ACHIEVEMENT_TEXT_X = ACHIEVEMENT_X + scaleToCellSize(10);
     public static final float ACHIEVEMENT_TEXT_Y = ACHIEVEMENT_Y + scaleToCellSize(6);
 
-    public static final float THOUGHT_LABEL_SCALE = 2.0f;
-    public static final float THOUGHT_DISPLAY_DURATION = 5.0f;
-
     public static final float LEADERBOARD_Y = -100;
 
     public static final float USERNAME_WIDTH = scaleToCellSize(15);
     public static final float USERNAME_HEIGHT = scaleToCellSize(2);
+
+    public static final float THOUGHT_TABLE_WIDTH = 560;
+    public static final float THOUGHT_TABLE_HEIGHT = 300;
 }

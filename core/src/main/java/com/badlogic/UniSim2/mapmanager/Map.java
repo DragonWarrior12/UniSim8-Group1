@@ -6,6 +6,8 @@ import com.badlogic.UniSim2.buildingmanager.BuildingManager;
 import com.badlogic.UniSim2.resources.*;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
+import com.badlogic.gdx.graphics.Pixmap;
+import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.Vector2;
@@ -24,8 +26,8 @@ public class Map {
     private final Grid grid;
 
     private BuildingManager buildings; // Used to control all the buildings in the game
-    public static Array<Sprite> collidableSprites; // Contains both buildings and paths 
-    
+    public static Array<Sprite> collidableSprites; // Contains both buildings and paths
+
     private final SpriteBatch spriteBatch;
     private StretchViewport viewport;
 
@@ -40,6 +42,11 @@ public class Map {
         collidableSprites = new Array<Sprite>();
         Paths.createPaths();
 
+        // new, adding a sprite behind the thoughts table to prevent buildings being placed
+        Sprite tableRegion = new Sprite(new Texture(new Pixmap((int)Consts.THOUGHT_TABLE_WIDTH, (int)Consts.THOUGHT_TABLE_HEIGHT, Pixmap.Format.RGB888)));
+        tableRegion.setPosition(Consts.WORLD_WIDTH - Consts.THOUGHT_TABLE_WIDTH, 0);
+        collidableSprites.add(tableRegion);
+
         this.viewport = game.getViewport();
 
         spriteBatch = new SpriteBatch();
@@ -48,7 +55,7 @@ public class Map {
     public BuildingManager getBuildingManager() {
         return buildings;
     }
-    
+
 
     /**
      * Handles all input.
@@ -70,10 +77,10 @@ public class Map {
         drawBackground();
         grid.draw(viewport);
         drawPath();
-        buildings.draw(spriteBatch); 
+        buildings.draw(spriteBatch);
     }
 
-    // Required to start drawing 
+    // Required to start drawing
     private void drawSetup(){
         ScreenUtils.clear(Consts.BACKGROUND_COLOR);
         viewport.apply();

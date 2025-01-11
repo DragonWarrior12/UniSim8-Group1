@@ -66,7 +66,7 @@ public class EndScreen implements Screen {
 
         // TextField needs to be in a table to properly set size
         Table usernameTable = new Table();
-        usernameTable.add(usernameField).width(Consts.USERNAME_WIDTH).height(Consts.USERNAME_HEIGHT).expand().fill();
+        usernameTable.add(usernameField).pad(4).width(Consts.USERNAME_WIDTH).height(Consts.USERNAME_HEIGHT).expand().fill();
         usernameTable.setPosition(Consts.SCORE_LABEL_X, Consts.SCORE_LABEL_Y - 40, Align.center);
 
         stage.addActor(usernameTable);

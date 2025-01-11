@@ -3,21 +3,30 @@ package com.badlogic.UniSim2.events;
 // new class
 
 import com.badlogic.UniSim2.GUImanager.GameScreen;
+import com.badlogic.UniSim2.resources.Consts;
 import com.badlogic.UniSim2.satisfaction.Thought;
 
 public class SimpleThoughtEvent extends Event{
     private final Thought thought;
 
     public SimpleThoughtEvent(String name, float triggerTime, Thought thought) {
-        super(name, triggerTime);
+        this(name, triggerTime, thought, Consts.MAX_TIME + 1);
+    }
+
+    public SimpleThoughtEvent(String name, float triggerTime, Thought thought, float endTime) {
+        super(name, triggerTime, endTime);
         this.thought = thought;
     }
 
     public void update(float time) {
         if (time >= triggerTime) {
+            if (time >= endTime) {
+                GameScreen.gameScreen.menu.satisfaction.removeThought(name);
+                isFinished = true;
+                return;
+            }
+
             GameScreen.gameScreen.menu.satisfaction.setThought(name, thought);
-            GameScreen.gameScreen.menu.showThoughtMessage(thought.getDescription());
-            isFinished = true;
         }
     }
 }

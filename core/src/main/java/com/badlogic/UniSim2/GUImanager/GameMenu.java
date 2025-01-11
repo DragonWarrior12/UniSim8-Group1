@@ -2,17 +2,21 @@ package com.badlogic.UniSim2.GUImanager;
 
 import com.badlogic.UniSim2.Main;
 import com.badlogic.UniSim2.buildingmanager.BuildingManager;
-import com.badlogic.UniSim2.events.Event;
 import com.badlogic.UniSim2.events.EventManager;
 import com.badlogic.UniSim2.resources.Assets;
 import com.badlogic.UniSim2.resources.Consts;
 import com.badlogic.UniSim2.satisfaction.Satisfaction;
+import com.badlogic.UniSim2.satisfaction.Thought;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Color;
+import com.badlogic.gdx.graphics.Pixmap;
+import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.ui.ProgressBar;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
+import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
 import com.badlogic.gdx.utils.Align;
 
@@ -33,12 +37,10 @@ public class GameMenu {
     private ProgressBar satisfactionBar;
     private ProgressBar satisfactionTarget;
     public Satisfaction satisfaction;
-    private EventManager eventManager;
-    private Label thoughtLabel;
-    private float thoughtDisplayTime;
-    private static final float THOUGHT_DISPLAY_DURATION = 5.0f;
+    EventManager eventManager; // package private for use in the GameScreen constructor
+    private Table thoughtTable;
 
-    public GameMenu(Main game, Timer timer, BuildingManager buildings){
+    public GameMenu(Main game, Timer timer, BuildingManager buildings) {
         stage = new Stage(game.getViewport());
         skin = new Skin(Gdx.files.internal("ui/uiskin.json"));
         buildingMenu = new BuildingMenu(stage, buildings);
@@ -54,15 +56,15 @@ public class GameMenu {
         Gdx.input.setInputProcessor(stage);
     }
 
-    private void createMenu(){
+    private void createMenu() {
         buildingMenu.createBuildingMenu();
-        initializeEvents(); // new
         createSatisfactionBar(); // new
+        initializeEvents(); // new
         createTimerLabel();
     }
 
     // Adds a label at the top of the screen displaying the time
-    private void createTimerLabel(){
+    private void createTimerLabel() {
 
         // Initialize timerLabel
         timerLabel = new Label("00:00", skin);
@@ -81,7 +83,7 @@ public class GameMenu {
      * Updates the time shown on the label to the elapsed time got from
      * the timer.
      */
-    private void updateTimerLabel(){
+    private void updateTimerLabel() {
         float elapsedTime = timer.getElapsedTime();
         int minutes = (int) (elapsedTime / 60);
         int seconds = (int) (elapsedTime % 60);
@@ -108,19 +110,21 @@ public class GameMenu {
     /**
      * Processes any input.
      */
-    public void input(){
+    public void input() {
         stage.act(Gdx.graphics.getDeltaTime());
     }
 
     /**
      * Updates and draws the menu.
      */
-    public void draw(){
+    public void draw() {
+        eventManager.updateEvents(); // new
         if (isPaused == false) {
-            eventManager.updateEvents(); // new
             updateTimerLabel();
-            updateSatisfaction(); // new
+            satisfaction.updateScore(); // new
         }
+        updateSatisfactionBar(); // new
+        updateThoughts(); // new
         buildingMenu.draw();
         stage.draw();
     }
@@ -128,7 +132,7 @@ public class GameMenu {
     /**
      * @return true if the menu is paused and false if not.
      */
-    public boolean getPaused(){
+    public boolean getPaused() {
         return isPaused;
     }
 
@@ -136,7 +140,7 @@ public class GameMenu {
      * Gets rid the all textures. This method should be called when the menu is
      * not going to be used anymore.
      */
-    public void dispose(){
+    public void dispose() {
         buildingMenu.dispose();
         stage.dispose();
         skin.dispose();
@@ -160,7 +164,7 @@ public class GameMenu {
         satisfactionTarget.setPosition(Consts.SATISFACTION_X, Consts.SATISFACTION_Y);
         stage.addActor(satisfactionTarget);
 
-        updateSatisfaction();
+        updateSatisfactionBar();
     }
 
     // new
@@ -169,15 +173,7 @@ public class GameMenu {
     }
 
     // new
-    private void updateSatisfaction() {
-        if (thoughtLabel.isVisible()) {
-            thoughtDisplayTime += Gdx.graphics.getDeltaTime();
-            if (thoughtDisplayTime >= THOUGHT_DISPLAY_DURATION) {
-                thoughtLabel.setVisible(false);
-            }
-        }
-
-        satisfaction.updateScore();
+    private void updateSatisfactionBar() {
         satisfactionBar.setValue(satisfaction.getScore());
         satisfactionTarget.setValue(satisfaction.getTarget());
 
@@ -187,6 +183,32 @@ public class GameMenu {
             satisfactionBar.setColor(Color.ORANGE);
         } else {
             satisfactionBar.setColor(Color.RED);
+        }
+    }
+
+    // new, package private for use in the GameScreen constructor
+    void updateThoughts() {
+        thoughtTable.clearChildren();
+
+        for (Thought thought : satisfaction.listThoughts()) {
+            if (thought.getDescription() == "") continue; // allows for hidden thoughts
+
+            Label label = new Label(thought.getDescription(), skin);
+
+            if (thought.getModification() > 0)
+                label.setColor(Color.OLIVE);
+            else if (thought.getModification() < 0)
+                label.setColor(Color.RED);
+            else
+                label.setColor(Color.GRAY);
+
+            label.setFontScale(2);
+            label.getStyle().font.getData().setLineHeight(14);
+            label.setWrap(true);
+
+            // if width isn't set here the text won't expand to the size of the table
+            thoughtTable.add(label).pad(6).width(Consts.THOUGHT_TABLE_WIDTH);
+            thoughtTable.row();
         }
     }
 
@@ -201,29 +223,25 @@ public class GameMenu {
     }
 
     // new
-    public void showThoughtMessage(String message) {
-        thoughtLabel.setText(message);
-        thoughtLabel.setVisible(true);
-        thoughtDisplayTime = 1;
-    }
-
-    // new
     private void initializeEvents() {
         eventManager = new EventManager();
 
-        // Initialize thought label
-        thoughtLabel = new Label("", skin);
-        thoughtLabel.setFontScale(2);
-        thoughtLabel.setAlignment(Align.center);
-        thoughtLabel.setColor(Color.WHITE);
-        thoughtLabel.setVisible(false);
+        Pixmap background = new Pixmap(1, 1, Pixmap.Format.RGB888);
+        background.setColor(Color.WHITE);
+        background.fill();
 
-        thoughtLabel.setPosition(
-            Consts.WORLD_WIDTH / 2,
-            Consts.WORLD_HEIGHT / 2,
-            Align.center
+        thoughtTable = new Table();
+        thoughtTable.setBackground(new TextureRegionDrawable(new TextureRegion(new Texture(background))));
+        thoughtTable.setWidth(Consts.THOUGHT_TABLE_WIDTH);
+        thoughtTable.setHeight(Consts.THOUGHT_TABLE_HEIGHT);
+        thoughtTable.top().left();
+        thoughtTable.setPosition(
+            Consts.WORLD_WIDTH,
+            0,
+            Align.bottomRight
         );
+        thoughtTable.pad(10);
 
-        stage.addActor(thoughtLabel);
+        stage.addActor(thoughtTable);
     }
 }

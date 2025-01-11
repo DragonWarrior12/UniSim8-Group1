@@ -35,6 +35,7 @@ public class GameScreen implements Screen {
     public static GameScreen gameScreen; // new
 
     public GameScreen(Main game) {
+        gameScreen = this; // new
         this.game = game;
         viewport = game.getViewport();
         timer = new Timer();
@@ -42,7 +43,10 @@ public class GameScreen implements Screen {
         menu = new GameMenu(game, timer, map.getBuildingManager());
         SoundManager.playMusic();
 
-        gameScreen = this; // new
+        // new, for events that start immediately. It can't be in GameMenu.initialiseEvents as it requires menu to be set
+        menu.eventManager.updateEvents();
+        menu.updateThoughts();
+
         achievementManager = new AchievementManager(menu); // new
     }
 
