@@ -4,6 +4,7 @@ import com.badlogic.UniSim2.GUImanager.EndScreen;
 import com.badlogic.UniSim2.GUImanager.GameScreen;
 import com.badlogic.UniSim2.GUImanager.LeaderboardScreen; // review just for debugging
 import com.badlogic.UniSim2.GUImanager.StartScreen;
+import com.badlogic.UniSim2.achievements.Achievement;
 import com.badlogic.UniSim2.resources.*;
 import com.badlogic.gdx.Game;
 import com.badlogic.gdx.utils.viewport.StretchViewport;
@@ -16,7 +17,7 @@ public class Main extends Game {
     private StartScreen startScreen;
     private GameScreen gameScreen;
     private EndScreen endScreen;
-    
+
     private LeaderboardScreen leaderboardScreen;
 
     @Override
@@ -24,7 +25,7 @@ public class Main extends Game {
         Assets.loadTextures();
          startScreen = new StartScreen(this);
          setScreen(startScreen);
-         
+
     }
 
     public StretchViewport getViewport() {
@@ -51,16 +52,20 @@ public class Main extends Game {
      * the {@link GameScreen} when the timer ends.
      */
     public void endGame() {
-        endScreen = new EndScreen(this, 0);
+        float score = gameScreen.menu.getSatisfaction().getScore();
+
+        for (Achievement ach : gameScreen.getAchievementManager().completeAchievements) {
+            score *= ach.getScoreMultiplier();
+        }
+
+        endScreen = new EndScreen(this, score);
         setScreen(endScreen);
-        
-        // a proper score system and a username isn't in place yet so I have used these as a placeholder
-        try {
-			leaderboardScreen = new LeaderboardScreen(this, "Player three", 100);
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-        setScreen(leaderboardScreen);
         gameScreen.dispose();
+    }
+
+    // new
+    public void showLeaderboard(String username, float score) {
+        leaderboardScreen = new LeaderboardScreen(this, username, score);
+        setScreen(leaderboardScreen);
     }
 }

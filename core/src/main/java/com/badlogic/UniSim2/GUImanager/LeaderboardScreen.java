@@ -1,8 +1,7 @@
 package com.badlogic.UniSim2.GUImanager;
 
-import java.util.ArrayList;
+import java.util.List;
 import java.util.Map;
-import java.util.Map.Entry;
 
 import com.badlogic.UniSim2.Main;
 import com.badlogic.UniSim2.resources.Assets;
@@ -20,39 +19,32 @@ import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.utils.ScreenUtils;
 import com.badlogic.gdx.utils.viewport.StretchViewport;
 
-import LeaderboardManager.LeaderboardManager;
+import com.badlogic.UniSim2.leaderboardManager.LeaderboardManager;
 
 public class LeaderboardScreen implements Screen {
-
-	private Main game;
 	private StretchViewport viewport;
 	private Stage stage;
-	private int score;
-	private String username;
 	private Table table;
 	private Label titleLabel;
-	
+
 	private final Skin skin;
 
 	/*
 	 * Shows the leaderboard once the game has ended
 	 */
-	public LeaderboardScreen(Main game, String username, int score) throws Exception {
-        this.game = game;
+	public LeaderboardScreen(Main game, String username, float score) {
         this.viewport = game.getViewport();
         this.stage = new Stage(this.viewport);
-        this.score = score;
-        this.username = username;
-        
+
         this.skin = new Skin(Gdx.files.internal("ui/uiskin.json"));
-        
+
         LeaderboardManager.addScore(username, score);
 
         setupLeaderboard();
 	}
-	
+
 	/*
-	 * setting up the leaderboard note to dev the code is still bunched into one I still have to clean 
+	 * setting up the leaderboard note to dev the code is still bunched into one I still have to clean
 	 * this code up breaking it into methods so that the code is more readable
 	 */
 	private void setupLeaderboard() {
@@ -61,45 +53,37 @@ public class LeaderboardScreen implements Screen {
 	    stage.addActor(table);
 
 	    // positioning the table
-	    table.center(); 
-	    table.setY(Gdx.graphics.getHeight() / 2 - table.getHeight() / 2 - 300); 
+	    table.center();
+        table.setY(Consts.LEADERBOARD_Y);
 
-	    // setting up the font 
+	    // setting up the font
 	    LabelStyle labelStyle = new LabelStyle();
 	    BitmapFont font = new BitmapFont();
 	    font.getData().setScale(2);
 	    labelStyle.font = font;
-	    labelStyle.fontColor = Color.BLACK; 
-
-	    // Create title label 
-	    titleLabel = new Label("Leaderboard", labelStyle); 
-	    table.add(titleLabel).colspan(3).pad(20).center();
-	    table.row();
+	    labelStyle.fontColor = Color.BLACK;
 
 	    // Add column headers
 	    table.add(new Label("Rank", labelStyle)).pad(10).center();
-	    table.add(new Label("Player Name", labelStyle)).pad(10).center(); 
+	    table.add(new Label("Player Name", labelStyle)).pad(10).center();
 	    table.add(new Label("Score", labelStyle)).pad(10).center();
 	    table.row();
 
-	    // Get the sorted leaderboard
-	    ArrayList<Map.Entry<String, Integer>> leaderboard = LeaderboardManager.getSortedLeaderboard();
-	    
+        // keep top 5
+	    List<Map.Entry<String, Float>> leaderboard = LeaderboardManager.getSortedLeaderboard().subList(0, 5);
+
 	    // Setting the leaderboard
 	    int rank = 1;
-	    for (Map.Entry<String, Integer> entry : leaderboard) {
+	    for (Map.Entry<String, Float> entry : leaderboard) {
 	        // Apply custom style to each label
-	        table.add(new Label(String.valueOf(rank), labelStyle)).pad(5).center();
-	        table.add(new Label(entry.getKey(), labelStyle)).pad(5).center();
-	        table.add(new Label(String.valueOf(entry.getValue()), labelStyle)).pad(5).center();
+	        table.add(new Label(String.valueOf(rank), labelStyle)).pad(1).center();
+	        table.add(new Label(entry.getKey(), labelStyle)).pad(1).center();
+	        table.add(new Label(String.format("%.2f", entry.getValue()), labelStyle)).pad(1).center();
 	        table.row();
 	        rank++;
 	    }
 	}
 
-
-	
-	
     private void drawBackground(){
         SpriteBatch spriteBatch = new SpriteBatch();
         ScreenUtils.clear(Consts.BACKGROUND_COLOR);
@@ -108,20 +92,16 @@ public class LeaderboardScreen implements Screen {
         spriteBatch.begin();
         spriteBatch.draw(Assets.startBackgroundTexture, 0, 0, Consts.WORLD_WIDTH, Consts.WORLD_HEIGHT);
         spriteBatch.end();
-        
     }
 	@Override
-	public void show() {
-		// TODO Auto-generated method stub
-
-	}
+	public void show() {}
 
 	@Override
 	public void render(float delta) {
 		viewport.apply();
 		ScreenUtils.clear(Consts.BACKGROUND_COLOR);
 		drawBackground();
-	       
+
 		stage.act(delta);
 		stage.draw();
 	}
@@ -132,16 +112,10 @@ public class LeaderboardScreen implements Screen {
 	}
 
 	@Override
-	public void pause() {
-		// TODO Auto-generated method stub
-
-	}
+	public void pause() {}
 
 	@Override
-	public void resume() {
-		// TODO Auto-generated method stub
-
-	}
+	public void resume() {}
 
 	@Override
 	public void hide() {

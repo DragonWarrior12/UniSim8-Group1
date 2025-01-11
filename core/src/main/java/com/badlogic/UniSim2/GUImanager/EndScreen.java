@@ -8,6 +8,8 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
+import com.badlogic.gdx.scenes.scene2d.ui.Table;
+import com.badlogic.gdx.scenes.scene2d.ui.TextField;
 import com.badlogic.gdx.utils.ScreenUtils;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.utils.viewport.StretchViewport;
@@ -22,28 +24,33 @@ public class EndScreen implements Screen {
     private Stage stage;
     private Label scoreLabel;
     private final Skin skin;
-    private int score;
+    private float score; // changes score to float
 
     SpriteBatch spriteBatch = new SpriteBatch();
 
-    public EndScreen(Main game, int score){
+    // new
+    private TextField usernameField;
+
+    public EndScreen(Main game, float score){ // changed score to float
         this.game = game;
         this.viewport = game.getViewport();
         this.stage = new Stage(this.viewport);
         this.skin = new Skin(Gdx.files.internal("ui/uiskin.json"));
         this.score = score;
         createScoreLabel();
+        createUsernameField(); // new
+        Gdx.input.setInputProcessor(stage); // new
     }
 
     // Adds a label to the middle of the screen displaying the score that the player
     // managed to get throughout the game.
     private void createScoreLabel() {
         // Initialize scoreLabel
-        scoreLabel = new Label("Score : " + score, skin);
-        scoreLabel.setFontScale(3); 
+        scoreLabel = new Label("Score : " + String.format("%.2f", score), skin);
+        scoreLabel.setFontScale(3);
         scoreLabel.setAlignment(Align.center);
         scoreLabel.setColor(Consts.TIMER_COLOR);
-        
+
         // Position the label at the top center of the screen
         scoreLabel.setPosition(Consts.SCORE_LABEL_X, Consts.SCORE_LABEL_Y, Align.center);
 
@@ -51,6 +58,24 @@ public class EndScreen implements Screen {
         stage.addActor(scoreLabel);
     }
 
+    // new
+    public void createUsernameField() {
+        usernameField = new TextField("", skin);
+        usernameField.setTextFieldListener(this::usernameFieldEventListener);
+        usernameField.getStyle().font.getData().setScale(2);
+
+        // TextField needs to be in a table to properly set size
+        Table usernameTable = new Table();
+        usernameTable.add(usernameField).width(Consts.USERNAME_WIDTH).height(Consts.USERNAME_HEIGHT).expand().fill();
+        usernameTable.setPosition(Consts.SCORE_LABEL_X, Consts.SCORE_LABEL_Y - 40, Align.center);
+
+        stage.addActor(usernameTable);
+    }
+
+    // new
+    public void usernameFieldEventListener(TextField field, char character) {
+        if (character == '\n') game.showLeaderboard(field.getText(), score);
+    }
 
     @Override
     public void show() {
@@ -63,7 +88,7 @@ public class EndScreen implements Screen {
         spriteBatch.begin();
         spriteBatch.draw(Assets.startBackgroundTexture, 0, 0, Consts.WORLD_WIDTH, Consts.WORLD_HEIGHT);
         spriteBatch.end();
-        
+
     }
 
     @Override
