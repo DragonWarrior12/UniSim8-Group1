@@ -8,27 +8,25 @@ import java.util.Map;
 import java.util.Map.Entry;
 
 
+import com.badlogic.UniSim2.resources.Consts;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Preferences;
 import com.badlogic.gdx.utils.Json;
 
 public class LeaderboardManager {
-    private static final String PREF_NAME = "UniSim-Group8";
-    private static final String KEY = "leaderboard";
-
     private static Json jsonFile = new Json();
-    private static Preferences pref = Gdx.app.getPreferences(PREF_NAME);
-    
-    private static Map<String, Float> getLeaderboard() {
-        String jsonString = pref.getString(KEY, "{}");
+    private static Preferences pref = Gdx.app.getPreferences(Consts.PREFERENCES_NAME);
+
+    public static Map<String, Float> getLeaderboard() {
+        String jsonString = pref.getString(Consts.PREFERENCES_KEY, "{}");
         return jsonFile.fromJson(HashMap.class, jsonString);
     }
-    
-    private static void saveLeaderboard(Map<String, Float> leaderboard) {
-        pref.putString(KEY, jsonFile.toJson(leaderboard));
+
+    public static void saveLeaderboard(Map<String, Float> leaderboard) {
+        pref.putString(Consts.PREFERENCES_KEY, jsonFile.toJson(leaderboard));
         pref.flush();
     }
-    
+
 
     /**
      * adds the score of the user to the leaderboard
@@ -63,7 +61,7 @@ public class LeaderboardManager {
         Map<String, Float> emptyLeaderboard = new HashMap<>();
         saveLeaderboard(emptyLeaderboard);
     }
-    
+
     public static int getSize() {
         Map<String, Float> leaderboard = getLeaderboard();
         return leaderboard.size();

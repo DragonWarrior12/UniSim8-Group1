@@ -141,4 +141,7 @@ public class Consts {
 
     public static final float THOUGHT_TABLE_WIDTH = 560;
     public static final float THOUGHT_TABLE_HEIGHT = 300;
+
+    public static final String PREFERENCES_NAME = "UniSim-Group8";
+    public static final String PREFERENCES_KEY = "leaderboard";
 }

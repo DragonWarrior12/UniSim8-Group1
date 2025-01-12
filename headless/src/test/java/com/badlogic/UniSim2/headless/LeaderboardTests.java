@@ -1,6 +1,7 @@
 package com.badlogic.UniSim2.headless;
 
 import com.badlogic.UniSim2.leaderboardManager.LeaderboardManager;
+import com.badlogic.UniSim2.resources.Consts;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Preferences;
 import org.junit.jupiter.api.AfterAll;
@@ -22,13 +23,13 @@ public class LeaderboardTests {
     @BeforeAll
     public static void setup() {
         HeadlessLauncher.main(new String[0]);
-        preferences = Gdx.app.getPreferences(LeaderboardManager.PREF_NAME);
-        savedLeaderboard = preferences.getString(LeaderboardManager.KEY, "{}");
+        preferences = Gdx.app.getPreferences(Consts.PREFERENCES_NAME);
+        savedLeaderboard = preferences.getString(Consts.PREFERENCES_KEY, "{}");
     }
 
     @BeforeEach
-    public void clearLeaderboard() {
-        preferences.remove(LeaderboardManager.KEY);
+    public void clearLeaderboardEntry() {
+        preferences.remove(Consts.PREFERENCES_KEY);
         preferences.flush();
     }
 
@@ -37,7 +38,6 @@ public class LeaderboardTests {
         LeaderboardManager.addScore("Test1", 100f);
         assertEquals(1, getSortedLeaderboard().size(), "Incorrect number of scores");
 
-        // doesn't overwrite higher score
         LeaderboardManager.addScore("Test1", 90f);
         assertEquals(100f, getSortedLeaderboard().get(0).getValue(), 0.0001, "Score overwritten with lower value");
 
@@ -70,7 +70,7 @@ public class LeaderboardTests {
 
     @AfterAll
     public static void cleanPreferences() {
-        preferences.putString(LeaderboardManager.KEY, savedLeaderboard);
+        preferences.putString(Consts.PREFERENCES_KEY, savedLeaderboard);
         preferences.flush();
     }
 }
