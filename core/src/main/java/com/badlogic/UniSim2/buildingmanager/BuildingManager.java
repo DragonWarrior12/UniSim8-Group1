@@ -40,7 +40,7 @@ public class BuildingManager {
      * @param mousePos The position of the mouse in world coordinates.
      * @param clicked true if a click has happened and false if not.
      */
-    public void input(Vector2 mousePos, boolean clicked, boolean rightClickPressed) {
+    public void input(Vector2 mousePos, boolean clicked, boolean rightClickPressed) { // changed cancel button to right click
 
         // If we're currently selecting a building
         if(currentlySelecting){

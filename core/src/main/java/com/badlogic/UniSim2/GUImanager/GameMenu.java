@@ -29,7 +29,7 @@ public class GameMenu {
     private Stage stage;
     private final Skin skin;
     private BuildingMenu buildingMenu;
-    public Timer timer; // changed to public
+    private Timer timer;
     private Label timerLabel;
     private boolean isPaused;
 
@@ -122,7 +122,7 @@ public class GameMenu {
      * Updates and draws the menu.
      */
     public void draw() {
-        float delta = GameScreen.gameScreen.getTimer().getElapsedTime();
+        float delta = GameScreen.gameScreen.getTimer().getElapsedTime(); // new
         eventManager.updateEvents(delta); // new
         if (isPaused == false) {
             updateTimerLabel();
@@ -130,7 +130,7 @@ public class GameMenu {
         }
         updateSatisfactionBar(); // new
         updateThoughtsTable(); // new
-        updateAchievementDisplay(delta);
+        updateAchievementDisplay(delta); // new
         buildingMenu.draw();
         stage.draw();
     }
@@ -230,6 +230,7 @@ public class GameMenu {
         getStage().addActor(achievementLabel);
     }
 
+    // new
     public void displayAchievement(Achievement achievement) {
         achievementLabel.setText(achievement.getName() + "\n" + achievement.getDescription());
         achievementImage.setDrawable(new TextureRegionDrawable(new TextureRegion(achievement.getTexture())));

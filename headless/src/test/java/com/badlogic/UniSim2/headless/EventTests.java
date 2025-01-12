@@ -1,5 +1,7 @@
 package com.badlogic.UniSim2.headless;
 
+// new class
+
 import com.badlogic.UniSim2.events.ConditionalThoughtEvent;
 import com.badlogic.UniSim2.events.Event;
 import com.badlogic.UniSim2.events.EventManager;

@@ -31,8 +31,7 @@ public class GameScreen implements Screen {
 
     // new
     private AchievementManager achievementManager;
-
-    public static GameScreen gameScreen; // new
+    public static GameScreen gameScreen;
 
     public GameScreen(Main game) {
         gameScreen = this; // new
@@ -43,7 +42,7 @@ public class GameScreen implements Screen {
         menu = new GameMenu(game, timer, map.getBuildingManager());
         SoundManager.playMusic();
 
-        // new, for events that start immediately. It can't be in GameMenu.initialiseEvents as it requires menu to be set
+        // new, for events that start immediately. It can't be in GameMenu.initialiseEvents as it requires menu to be assigned
         menu.eventManager.updateEvents(0);
         menu.updateThoughtsTable();
 
@@ -58,7 +57,7 @@ public class GameScreen implements Screen {
     @Override
     public void render(float delta) {
         input();
-        update(delta); // changed
+        update();
         if (hasEnded == true) return;
         draw();
     }
@@ -86,7 +85,7 @@ public class GameScreen implements Screen {
      * Will update the timer or not (depending on whether the game is paused)
      * and will end the game if the timer has reached its max time.
      */
-    private void update(float deltaTime) { // added delta time
+    private void update() {
         if (isPaused == false) {
             timer.update();
             if (timer.hasReachedMaxTime()) {

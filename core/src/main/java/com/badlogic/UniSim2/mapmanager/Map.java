@@ -64,7 +64,7 @@ public class Map {
         Vector2 mousePos = new Vector2(Gdx.input.getX(), Gdx.input.getY()); // Gets the position of the mouse
         viewport.unproject(mousePos);
         boolean clicked = Gdx.input.justTouched(); // True when the mouse is clicked
-        boolean rightClickPressed = Gdx.input.isButtonJustPressed(Input.Buttons.RIGHT);
+        boolean rightClickPressed = Gdx.input.isButtonJustPressed(Input.Buttons.RIGHT); // changed cancel button to right click
         buildings.input(mousePos, clicked, rightClickPressed); // Handles input for all buildings in the game
     }
 

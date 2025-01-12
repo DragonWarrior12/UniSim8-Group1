@@ -46,7 +46,7 @@ public class EndScreen implements Screen {
     // managed to get throughout the game.
     private void createScoreLabel() {
         // Initialize scoreLabel
-        scoreLabel = new Label("Score : " + String.format("%.2f", score), skin);
+        scoreLabel = new Label("Score : " + String.format("%.2f", score), skin); // changed score to float
         scoreLabel.setFontScale(3);
         scoreLabel.setAlignment(Align.center);
         scoreLabel.setColor(Consts.TIMER_COLOR);

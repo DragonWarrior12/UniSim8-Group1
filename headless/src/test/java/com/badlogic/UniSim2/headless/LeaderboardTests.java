@@ -1,5 +1,7 @@
 package com.badlogic.UniSim2.headless;
 
+// new class
+
 import com.badlogic.UniSim2.leaderboardManager.LeaderboardManager;
 import com.badlogic.UniSim2.resources.Consts;
 import com.badlogic.gdx.Gdx;

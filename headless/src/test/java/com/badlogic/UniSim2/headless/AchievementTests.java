@@ -1,5 +1,7 @@
 package com.badlogic.UniSim2.headless;
 
+// new class
+
 import com.badlogic.UniSim2.GUImanager.GameMenu;
 import com.badlogic.UniSim2.achievements.Achievement;
 import com.badlogic.UniSim2.achievements.AchievementManager;

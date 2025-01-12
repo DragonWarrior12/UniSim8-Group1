@@ -1,6 +1,7 @@
 package com.badlogic.UniSim2.events;
 
-import com.badlogic.UniSim2.GUImanager.GameScreen;
+// new class
+
 import com.badlogic.UniSim2.resources.Consts;
 import com.badlogic.UniSim2.satisfaction.Satisfaction;
 import com.badlogic.UniSim2.satisfaction.Thought;

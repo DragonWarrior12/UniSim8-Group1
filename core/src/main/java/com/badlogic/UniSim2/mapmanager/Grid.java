@@ -12,15 +12,15 @@ import com.badlogic.gdx.utils.viewport.StretchViewport;
  */
 public class Grid {
 
-    private final int rows; 
-    private final int cols; 
-    private final Color gridColor; 
+    private final int rows;
+    private final int cols;
+    private final Color gridColor;
     private final float cellSize;
 
     // Each grid space will have a status (Not used yet)
     public enum Status{
         Building,
-        Path, 
+        Path,
         Unoccupied
     }
     private Status[][] grid; // 2D array to get status at any point (Not used yet)
@@ -33,11 +33,10 @@ public class Grid {
         grid = new Status[rows][cols];
         cellSize = Consts.CELL_SIZE;
         gridColor = Consts.GRID_COLOR;
-        shapeRenderer = new ShapeRenderer(); 
+        shapeRenderer = new ShapeRenderer();
     }
 
     // Called when a building is placed to update the status of the corresponding grid spaces (Not used yet)
-    @SuppressWarnings("unused")
     private void updateGrid(Building building){
 
         int startCol = building.getCol();
@@ -58,16 +57,16 @@ public class Grid {
      */
     public void draw(StretchViewport viewport) {
         setupRenderer(viewport);
-        drawHorizontalLines(); 
+        drawHorizontalLines();
         drawVerticalLines();
-        shapeRenderer.end(); 
+        shapeRenderer.end();
     }
 
     // Set up the ShapeRenderer with the viewport
     private void setupRenderer(StretchViewport viewport) {
-        shapeRenderer.setProjectionMatrix(viewport.getCamera().combined); 
-        shapeRenderer.begin(ShapeRenderer.ShapeType.Line); 
-        shapeRenderer.setColor(gridColor); 
+        shapeRenderer.setProjectionMatrix(viewport.getCamera().combined);
+        shapeRenderer.begin(ShapeRenderer.ShapeType.Line);
+        shapeRenderer.setColor(gridColor);
     }
 
     // Draw horizontal grid lines
@@ -87,6 +86,6 @@ public class Grid {
     }
 
     public void dispose() {
-        shapeRenderer.dispose(); 
+        shapeRenderer.dispose();
     }
 }

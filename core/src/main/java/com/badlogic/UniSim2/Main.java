@@ -19,6 +19,7 @@ public class Main extends Game {
     private GameScreen gameScreen;
     private EndScreen endScreen;
 
+    // new
     private LeaderboardScreen leaderboardScreen;
 
     @Override
@@ -26,7 +27,6 @@ public class Main extends Game {
         Assets.loadTextures();
          startScreen = new StartScreen(this);
          setScreen(startScreen);
-
     }
 
     public StretchViewport getViewport() {
@@ -53,13 +53,14 @@ public class Main extends Game {
      * the {@link GameScreen} when the timer ends.
      */
     public void endGame() {
-        float score = Satisfaction.satisfaction.getScore();
+        float score = Satisfaction.satisfaction.getScore(); // new
 
+        // new
         for (Achievement ach : gameScreen.getAchievementManager().completeAchievements) {
             score *= ach.getScoreMultiplier();
         }
 
-        endScreen = new EndScreen(this, score);
+        endScreen = new EndScreen(this, score); // added score
         setScreen(endScreen);
         gameScreen.dispose();
     }

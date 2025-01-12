@@ -30,7 +30,7 @@ public class BuildingMenu {
     private final Skin skin;
 
     // Holds the count of each type of building
-    public int accomodationCount, lectureHallCount, libraryCount, courseCount, foodZoneCount, recreationalCount, natureCount;
+    private int accomodationCount, lectureHallCount, libraryCount, courseCount, foodZoneCount, recreationalCount, natureCount;
     public static int[] buildingCounts;
 
     // Holds the labels that display the count of each building
@@ -74,7 +74,7 @@ public class BuildingMenu {
      * a count label for each button.
      */
     private void createImageButtons() {
-        int buttonGap = Consts.BUILDING_BUTTON_GAP * 2; // updated
+        int buttonGap = Consts.BUILDING_BUTTON_GAP * 2; // updated to add space for the satisfaction bar
 
         // Iterating through each type of building
         for(Building.BuildingTypes type : Building.BuildingTypes.values()){

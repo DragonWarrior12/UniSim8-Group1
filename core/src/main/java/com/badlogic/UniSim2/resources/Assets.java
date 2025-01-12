@@ -73,7 +73,6 @@ public class Assets {
 
     // new
     public static Texture targetMarker;
-
     public static Texture achievementTexture;
     public static Texture badAchievementTexture;
 
@@ -177,7 +176,6 @@ public class Assets {
 
         // new
         targetMarker =                  new Texture("textures/targetMarker.png");
-
         achievementTexture =            new Texture("textures/AchievementTexture.png");
         badAchievementTexture =         new Texture("textures/BadAchievementTexture.png");
     }

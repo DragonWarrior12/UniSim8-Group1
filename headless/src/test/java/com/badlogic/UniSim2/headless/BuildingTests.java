@@ -1,5 +1,7 @@
 package com.badlogic.UniSim2.headless;
 
+// new class
+
 import com.badlogic.UniSim2.GUImanager.BuildingMenu;
 import com.badlogic.UniSim2.buildingmanager.Building;
 import com.badlogic.UniSim2.buildingmanager.BuildingManager;
