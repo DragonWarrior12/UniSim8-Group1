@@ -122,15 +122,14 @@ public class GameMenu {
      * Updates and draws the menu.
      */
     public void draw() {
-        float delta = GameScreen.gameScreen.getTimer().getElapsedTime(); // new
-        eventManager.updateEvents(delta); // new
+        eventManager.updateEvents(GameScreen.gameScreen.getTimer().getElapsedTime()); // new
         if (isPaused == false) {
             updateTimerLabel();
             satisfaction.updateScore(); // new
         }
         updateSatisfactionBar(); // new
         updateThoughtsTable(); // new
-        updateAchievementDisplay(delta); // new
+        updateAchievementDisplay(Gdx.graphics.getDeltaTime()); // new
         buildingMenu.draw();
         stage.draw();
     }
@@ -242,6 +241,8 @@ public class GameMenu {
     // new
     public void updateAchievementDisplay(float deltaTime) {
         if (achievementDisplayTimer >= 0) {
+            Gdx.app.log("AchievementTimer", String.valueOf(achievementDisplayTimer));
+            Gdx.app.log("Delta", String.valueOf(achievementDisplayTimer));
             achievementDisplayTimer -= deltaTime;
             if (achievementDisplayTimer < 0) {
                 achievementImage.setVisible(false);
