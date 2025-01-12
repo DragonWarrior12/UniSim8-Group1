@@ -13,8 +13,22 @@ import com.badlogic.gdx.Preferences;
 import com.badlogic.gdx.utils.Json;
 
 public class LeaderboardManager {
-    public static final String PREF_NAME = "UniSim-Group8";
-    public static final String KEY = "leaderboard";
+    private static final String PREF_NAME = "UniSim-Group8";
+    private static final String KEY = "leaderboard";
+
+    private static Json jsonFile = new Json();
+    private static Preferences pref = Gdx.app.getPreferences(PREF_NAME);
+    
+    private static Map<String, Float> getLeaderboard() {
+        String jsonString = pref.getString(KEY, "{}");
+        return jsonFile.fromJson(HashMap.class, jsonString);
+    }
+    
+    private static void saveLeaderboard(Map<String, Float> leaderboard) {
+        pref.putString(KEY, jsonFile.toJson(leaderboard));
+        pref.flush();
+    }
+    
 
     /**
      * adds the score of the user to the leaderboard
@@ -24,17 +38,9 @@ public class LeaderboardManager {
      * @param score    the score the player scored
      */
     public static void addScore(String username, float score) {
-        Preferences pref = Gdx.app.getPreferences(PREF_NAME);
-
-        Json jsonFile = new Json();
-        String jsonFileString = pref.getString(KEY, "{}");
-
-        Map<String, Float> leaderboard = jsonFile.fromJson(HashMap.class, jsonFileString);
-
+        Map<String, Float> leaderboard = getLeaderboard();
         leaderboard.put(username, Math.max(score, leaderboard.getOrDefault(username, 0f)));
-
-        pref.putString(KEY, jsonFile.toJson(leaderboard));
-        pref.flush();
+        saveLeaderboard(leaderboard);
     }
 
     /**
@@ -43,29 +49,23 @@ public class LeaderboardManager {
      * @return the sorted leaderboard
      */
     public static ArrayList<Entry<String, Float>> getSortedLeaderboard() {
-        Preferences pref = Gdx.app.getPreferences(PREF_NAME);
-
-        Json jsonFile = new Json();
-        String jsonString = pref.getString(KEY, "{}");
-
-        Map<String, Float> leaderboard = jsonFile.fromJson(HashMap.class, jsonString);
-
+        Map<String, Float> leaderboard = getLeaderboard();
         ArrayList<Entry<String, Float>> sortedLeaderboard = new ArrayList<>(leaderboard.entrySet());
 
-        // sorts in descending order
+        // Sorts in descending order based on score
         sortedLeaderboard.sort((score1, score2) -> score2.getValue().compareTo(score1.getValue()));
 
         return sortedLeaderboard;
     }
 
+
     public static void clearLeaderboard() {
-        Preferences pref = Gdx.app.getPreferences(PREF_NAME);
-        Json jsonFile = new Json();
-
         Map<String, Float> emptyLeaderboard = new HashMap<>();
-
-        pref.putString(KEY, jsonFile.toJson(emptyLeaderboard));
-
-        pref.flush();
+        saveLeaderboard(emptyLeaderboard);
+    }
+    
+    public static int getSize() {
+        Map<String, Float> leaderboard = getLeaderboard();
+        return leaderboard.size();
     }
 }

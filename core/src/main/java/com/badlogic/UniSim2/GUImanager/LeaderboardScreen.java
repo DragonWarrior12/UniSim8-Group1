@@ -25,9 +25,6 @@ public class LeaderboardScreen implements Screen {
 	private StretchViewport viewport;
 	private Stage stage;
 	private Table table;
-	private Label titleLabel;
-
-	private final Skin skin;
 
 	/*
 	 * Shows the leaderboard once the game has ended
@@ -35,8 +32,6 @@ public class LeaderboardScreen implements Screen {
 	public LeaderboardScreen(Main game, String username, float score) {
         this.viewport = game.getViewport();
         this.stage = new Stage(this.viewport);
-
-        this.skin = new Skin(Gdx.files.internal("ui/uiskin.json"));
 
         LeaderboardManager.addScore(username, score);
 
@@ -70,7 +65,8 @@ public class LeaderboardScreen implements Screen {
 	    table.row();
 
         // keep top 5
-	    List<Map.Entry<String, Float>> leaderboard = LeaderboardManager.getSortedLeaderboard().subList(0, 5);
+	    int topEntries = Math.min(5, LeaderboardManager.getSize());
+	    List<Map.Entry<String, Float>> leaderboard = LeaderboardManager.getSortedLeaderboard().subList(0, topEntries);
 
 	    // Setting the leaderboard
 	    int rank = 1;
