@@ -40,15 +40,15 @@ public class BuildingManager {
      * @param mousePos The position of the mouse in world coordinates.
      * @param clicked true if a click has happened and false if not.
      */
-    public void input(Vector2 mousePos, boolean clicked, boolean backspacePressed) {
+    public void input(Vector2 mousePos, boolean clicked, boolean rightClickPressed) {
 
         // If we're currently selecting a building
         if(currentlySelecting){
-            if(clicked){
-                handlePlacing(); // Place the building in the location of the click
-            }
-            else if(backspacePressed){
+            if(rightClickPressed){
                 removeBuilding();
+            }
+            else if(clicked){
+                handlePlacing(); // Place the building in the location of the click
             }
 
             else{

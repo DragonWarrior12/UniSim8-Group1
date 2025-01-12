@@ -64,8 +64,8 @@ public class Map {
         Vector2 mousePos = new Vector2(Gdx.input.getX(), Gdx.input.getY()); // Gets the position of the mouse
         viewport.unproject(mousePos);
         boolean clicked = Gdx.input.justTouched(); // True when the mouse is clicked
-        boolean backspacePressed = Gdx.input.isKeyJustPressed(Input.Keys.BACKSPACE);
-        buildings.input(mousePos, clicked, backspacePressed); // Handles input for all buildings in the game
+        boolean rightClickPressed = Gdx.input.isButtonJustPressed(Input.Buttons.RIGHT);
+        buildings.input(mousePos, clicked, rightClickPressed); // Handles input for all buildings in the game
     }
 
     /**
